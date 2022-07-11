@@ -1,0 +1,25 @@
+# make
+UCM/build/
+
+# MacOS
+.DS_Store/
+
+# idea
+.idea/
+idea/
+out/
+
+# vscode
+.vscode
+.vs
+
+#test
+test.json
+
+# kde
+.kde
+*.kde
+build_*
+
+#c4droid
+.c4droid
