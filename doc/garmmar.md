@@ -1,4 +1,4 @@
-# 文法
+# 
 
 G(S):
 1. factor -> PTHL expr PTHR | NUM
