@@ -5,7 +5,7 @@
 
 int main()
 {
-	printf("Unique 0.0.4 (2022.7.10 11:20)\nInput 'q' to quit this program\n");
+	printf("Unique 0.1.0 (v0.1.0 2022.7.11 14:51)\nInput 'q' to quit this program\n");
 
 	while (true)
 	{
