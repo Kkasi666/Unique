@@ -12,33 +12,46 @@ bool isWord(char chr) {
 
 enum tokenType getBraType(const char chr) {
 	switch (chr) {
-		case '(': return PTHL; break;
-		case ')': return PTHR; break;
-		// case '[': return BRKL; break;
-		// case ']': return BRKR; break;
-		// case '{': return MUL; break;
-		// case '}': return DIV; break;
-		default:  return TNULL; break;
+		case '(': return T_PTHL; break;
+		case ')': return T_PTHR; break;
+		// case '[': return T_BRKL; break;
+		// case ']': return T_BRKR; break;
+		// case '{': return T_MUL; break;
+		// case '}': return T_DIV; break;
+		default:  return T_NULL; break;
 	}
 }
 
 enum tokenType getOpType(const char *chr, int row, usint &len) {
 	switch (chr[0]) {
-		case '+': len=1; return ADD; break;
-		case '-': len=1; return SUB; break;
-		case '*': len=1; return MUL; break;
-		case '/': len=1; return DIV; break;
-		default:  return TNULL; break;
+		case '+': len=1; return T_ADD; break;
+		case '-': len=1; return T_SUB; break;
+		case '*': len=1; return T_MUL; break;
+		case '/': len=1; return T_DIV; break;
+		default:  return T_NULL; break;
 	}
 }
 
 /* class Token */
 
 Token::Token()
-	: type(TNULL), data("\0"), line(0), row(0) {
+	: type(T_NULL), data("\0"), line(0), row(0), value(0) {
 }
 Token::Token(enum tokenType type,const std::string data,int line,int row)
-	: type(type), data(data), line(line), row(row) {
+	: type(type), data(data), line(line), row(row),value(0) {
+	if(this->type==T_NUM) {
+		bool isNeg=false;
+		if(data[0]=='-') {
+			isNeg=true;
+		}
+		int index=1, res=0;
+		for(int i=data.size()-1;i>=isNeg;i--) {
+			res+=(data[i]-'0')*index;
+			index*=10;
+		}
+		if(isNeg) res*=-1;
+		this->value = res;
+	}
 }
 
 Token::~Token() {}
@@ -59,22 +72,12 @@ int Token::getRow() const {
 	return this->row;
 }
 
-void Token::show() {
-	printf("{ \"type\": %d , \"data\" : \"%s\" }",type,data.c_str());
+int Token::getValue() const {
+	return this->value;
 }
 
-int Token::toInt() {
-	bool isNeg=false;
-	if(data[0]=='-') {
-		isNeg=true;
-	}
-	int index=1, res=0;
-	for(int i=data.size()-1;i>=isNeg;i--) {
-		res+=(data[i]-'0')*index;
-		index*=10;
-	}
-	if(isNeg) res*=-1;
-	return res;
+void Token::show() {
+	printf("{ \"type\": %d , \"data\" : \"%s\" }", type, data.c_str());
 }
 
 /* class TokenList */
@@ -154,8 +157,8 @@ void Lexer::lexing() {
 					data.push_back(code[pos++]);
 				}
 				row+=(data.size()+1);
-				tkl->addToken(Token(NUM,data,line,row));
-			} else { // is oparetor.
+				tkl->addToken(Token(T_NUM,data,line,row));
+			} else { // is '-' oparetor.
 				for(int j=0; j<dataLen; j++) {
 					data.push_back(code[pos+j]);
 				}
@@ -168,13 +171,18 @@ void Lexer::lexing() {
 				data.push_back(code[pos++]);
 			}
 			row+=data.size();
-			tkl->addToken(Token(NUM,data,line,row));
+			tkl->addToken(Token(T_NUM,data,line,row));
 		} else if(isWord(code[pos])) { // is identifier?
 			while(isWord(code[pos]) && pos<code.size()) {
 				data.push_back(code[pos++]);
 			}
 			row+=data.size();
-			tkl->addToken(Token(WORD,data,line,row));
+			tkl->addToken(Token(T_IDN,data,line,row));
+		} else if(code[pos]=='=') { // is assign symbol?
+			data.push_back(code[pos]);
+			tkl->addToken(Token(T_ASS,data,line,row));
+			pos++;
+			row++;
 		} else if(getBraType(code[pos])) { // is braket?
 			enum tokenType opT = getBraType(code[pos]);
 			data.push_back(code[pos]);

@@ -1,15 +1,15 @@
-#ifndef SGLR_SCM_PARSER_H_
-#define SGLR_SCM_PARSER_H_
+#ifndef UNIQUE_UCM_PARSER_H_
+#define UNIQUE_UCM_PARSER_H_
 
-#include "share.h"
+#include "def.h"
 #include "ASTNode.h"
 
 /*
-G(S):
-1. factor -> PTHL expr PTHR | NUM
-2. term -> factor ((ADD|SUB) factor)*
-3. expr -> term ((MUL|DIV) term)*
-4. statExpr -> expr
+factor -> PTHL expr PTHR | NUM | IDN
+term -> factor ((ADD|SUB) factor)*
+expr -> term ((MUL|DIV) term)*
+assign -> IDN ASS expr
+statExpr -> assign+
 */
 
 class Parser {
@@ -19,31 +19,36 @@ private:
 	StatExprNode *stat;
 protected:
 	bool isNumTerminal();
+	bool isIdnTerminal();
 	bool isTermOp();
 	bool isExprOp();
 	bool isLeftPth();
 	bool isRightPth();
+	bool isAssignment();
 
 	bool isFactorStart();
 	bool isTermStart();
 	bool isExprStart();
+	bool isAssignStart();
 	bool isStatStart();
 
 	void next();
 	Terminal *number();
+	Terminal *identifier();
 	Terminal *termOp();
 	Terminal *exprOp();
-	FactorNode *factor(); // factor -> PTHL expr PTHR | NUM
-	TermNode *term(); // term -> factor ((ADD|SUB) factor)*
-	ExprNode *expr(); // expr -> term ((MUL|DIV) term)*
-	StatExprNode *statExpr(); // statExpr -> expr
+	FactorNode *factor();
+	TermNode *term();
+	ExprNode *expr();
+	AssignNode *assign();
+	StatExprNode *statExpr();
 public:
 	Parser();
 	~Parser();
 	void setTokenList(TokenList *tkl);
 	int parsing();
 	void showAST();
-	int getResult();
+	StatExprNode *getAST() const;
 };
 
-#endif // SGLR_SCM_PARSER_H_
+#endif // UNIQUE_UCM_PARSER_H_

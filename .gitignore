@@ -23,3 +23,6 @@ build_*
 
 #c4droid
 .c4droid
+
+#UVM
+UVM/*

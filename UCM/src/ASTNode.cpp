@@ -4,24 +4,24 @@
 /* class FactorNode */
 
 FactorNode::FactorNode()
-	: number(nullptr), factor(nullptr) {
+	: operand(nullptr), factor(nullptr) {
 }
 
 FactorNode::~FactorNode() {
-	if(number) delete number;
+	if(operand) delete operand;
 	if(factor) delete factor;
 }
 
-void FactorNode::setNumber(Terminal *num) {
-	this->number=num;
+void FactorNode::setOperand(Terminal *ope) {
+	this->operand=ope;
 }
 
 void FactorNode::setFactor(ExprNode *fac) {
 	this->factor=fac;
 }
 
-Terminal *FactorNode::getNumber() const {
-	return this->number;
+Terminal *FactorNode::getOperand() const {
+	return this->operand;
 }
 
 ExprNode *FactorNode::getFactor() const {
@@ -29,24 +29,14 @@ ExprNode *FactorNode::getFactor() const {
 }
 
 void FactorNode::show() {
-	if(number) {
-		printf("{ \"Factor\": { \"number\": "); // token
-		number->show();
+	if(operand) {
+		printf("{ \"Factor\": { \"operand\": "); // token
+		operand->show();
 		printf(" } }");
 	} else if(factor) {
 		printf("{ \"Factor\": { ");
 		factor->show();
 		printf(" } }");
-	}
-}
-
-int FactorNode::getResult() {
-	if(number) {
-		return number->toInt();
-	} else if(factor) {
-		return factor->getResult();
-	} else {
-		return 0;
 	}
 }
 
@@ -68,6 +58,22 @@ TermNode::~TermNode() {
 	}
 }
 
+bool TermNode::factorEmpty() {
+	return factors.empty();
+}
+
+bool TermNode::operatorEmpty() {
+	return operators.empty();
+}
+
+usint TermNode::getFactorSize() const {
+	return factors.size();
+}
+
+bool TermNode::onlyFactor() {
+	return factors.size()==1;
+}
+
 void TermNode::addFactor(FactorNode *factorN) {
 	if(factorN) {
 		this->factors.push_back(factorN);
@@ -80,17 +86,17 @@ void TermNode::addOperator(Terminal *ter) {
 	}
 }
 
-int TermNode::termOpMake(usint index, int a, int b) {
-	switch (operators[index]->getType()) {
-		case MUL: return a*b; break;
-		case DIV: return a/b; break;
-		default: return 0; break;
-	}
+FactorNode *TermNode::getFactor(usint index) const {
+	return factors.at(index);
+}
+
+Terminal *TermNode::getOperator(usint index) const{
+	return operators.at(index);
 }
 
 void TermNode::show() {
 	if(factors.empty()){ return; }
-	printf("\"Term\": { \"factors\": [ ");
+	printf("{ \"Term\": { \"factors\": [ ");
 	for(int i=0;i<factors.size();i++) {
 		factors.at(i)->show();
 		printf(", ");
@@ -104,28 +110,7 @@ void TermNode::show() {
 		}
 		printf("\b\b  \b\b]");
 	}
-	printf(" }");
-}
-
-int TermNode::getResult() {
-	if(!factors.empty()) {
-		if(factors.size()==1) {
-			return factors[0]->getResult();
-		} else if(!operators.empty()) {
-			int a=factors[0]->getResult();
-			int b=factors[1]->getResult();
-			int res=termOpMake(0,a,b);
-			for(int i=2;i<factors.size();i++) {
-				a=factors[i]->getResult();
-				res=termOpMake(i-1,res,a);
-			}
-			return res;
-		} else {
-			return 0;
-		}
-	} else {
-		return 0;
-	}
+	printf(" } }");
 }
 
 /* class ExprNode */
@@ -146,6 +131,22 @@ ExprNode::~ExprNode() {
 	}
 }
 
+bool ExprNode::factorEmpty() {
+	return factors.empty();
+}
+
+bool ExprNode::operatorEmpty() {
+	return operators.empty();
+}
+
+usint ExprNode::getFactorSize() const {
+	return factors.size();
+}
+
+bool ExprNode::onlyFactor() {
+	return factors.size()==1;
+}
+
 void ExprNode::addFactor(TermNode *termN) {
 	if(termN) {
 		this->factors.push_back(termN);
@@ -158,12 +159,12 @@ void ExprNode::addOperator(Terminal *ter) {
 	}
 }
 
-int ExprNode::exprOpMake(usint index, int a, int b) {
-	switch (operators[index]->getType()) {
-		case ADD: return a+b; break;
-		case SUB: return a-b; break;
-		default: return 0; break;
-	}
+TermNode *ExprNode::getFactor(usint index) const {
+	return factors.at(index);
+}
+
+Terminal *ExprNode::getOperator(usint index) const{
+	return operators.at(index);
 }
 
 void   ExprNode::show() {
@@ -185,58 +186,72 @@ void   ExprNode::show() {
 	printf(" }");
 }
 
-int ExprNode::getResult() {
-	if(!factors.empty()) {
-		if(factors.size()==1) {
-			return factors[0]->getResult();
-		} else if(!operators.empty()) {
-			int a=factors[0]->getResult();
-			int b=factors[1]->getResult();
-			int res=exprOpMake(0,a,b);
-			for(int i=2;i<factors.size();i++) {
-				a=factors[i]->getResult();
-				res=exprOpMake(i-1,res,a);
-			}
-			return res;
-		} else {
-			return 0;
-		}
-	} else {
-		return 0;
+/* class AssignNode */
+
+AssignNode::AssignNode()
+	: factor(nullptr) {}
+
+AssignNode::~AssignNode() {}
+
+void AssignNode::setIdentifier(Terminal *idn) {
+	this->identifier=idn;
+}
+void AssignNode::setFactor(ExprNode *exprN) {
+	this->factor=exprN;
+}
+Terminal *AssignNode::getIdentifier() const {
+	return this->identifier;
+}
+ExprNode *AssignNode::getFactor() const {
+	return this->factor;
+}
+void AssignNode::show() {
+	if(identifier) {
+		printf("{ \"Assign\": { \"identifier\": ");
+		identifier->show();
+		printf(", ");
+		factor->show();
+		printf(" } }");
 	}
 }
 
 /* class StatExprNode */
 
-StatExprNode::StatExprNode()
-	: factor(nullptr) {
-}
+StatExprNode::StatExprNode() {}
 
 StatExprNode::~StatExprNode() {
-	if(factor) delete factor;
-}
-
-void StatExprNode::setFactor(ExprNode *fac) {
-	if(fac) {
-		this->factor=fac;
+	if(!factors.empty()) {
+		for(int i=0; i<factors.size(); i++) {
+			delete factors.at(i);
+		}
 	}
 }
-ExprNode *StatExprNode::getFactor() const {
-	return this->factor;
+
+usint StatExprNode::getFactorSize() const {
+	return factors.size();
+}
+
+void StatExprNode::addFactor(AssignNode *fac) {
+	factors.push_back(fac);
+}
+AssignNode *StatExprNode::getFactor(usint index) const {
+	if(!factors.empty()) {
+		return factors.at(index);
+	} else {
+		return 0x0;
+	}
+	
 }
 
 void StatExprNode::show() {
-	if(factor) {
-		printf("{ \"StatExpr\": { ");
-		factor->show();
-		printf(" } }\n");
-	}
-}
-
-int StatExprNode::getResult() {
-	if(factor) {
-		return factor->getResult();
-	} else {
-		return 0;
+	if(!factors.empty()) {
+		printf("{ \"StatExpr\": { \"factors\": [ ");
+		for(int i=0; i<factors.size(); i++) {
+			if(factors.at(i)!=0x0) {
+				factors.at(i)->show();
+				printf(", ");
+			}
+		}
+		printf("\b\b  \b\b ] } }\n");
 	}
 }

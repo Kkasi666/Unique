@@ -1,25 +1,26 @@
-#ifndef SGLR_SCM_LEXER_H_
-#define SGLR_SCM_LEXER_H_
+#ifndef UNIQUE_UCM_LEXER_H_
+#define UNIQUE_UCM_LEXER_H_
 
 #include <string>
 #include <vector>
-#include "share.h"
+#include "def.h"
 
 enum tokenType {
-	TNULL=0,
-	NUM,
-	WORD,
-	ADD,
-	SUB,
-	MUL,
-	DIV,
-	PTHL, // parentheses left
-	PTHR, 
-	// BRKL, // bracket left
-	// BRKR,
-	// BRCL, // Braces left
-	// BRCR,
-	CMT // comment
+	T_NULL=0,
+	T_NUM,
+	T_IDN,
+	T_ASS,
+	T_ADD,
+	T_SUB,
+	T_MUL,
+	T_DIV,
+	T_PTHL, // parentheses left
+	T_PTHR, 
+	// T_BRKL, // bracket left
+	// T_BRKR,
+	// T_BRCL, // Braces left
+	// T_BRCR,
+	T_CMT // comment
 };
 
 bool isNumber(char chr);
@@ -36,12 +37,13 @@ public:
 	std::string getData() const;
 	int getLine() const;
 	int getRow() const;
+	int getValue() const;
 	void show();
-	int toInt();
 private:
 	enum tokenType type;
 	std::string data;
 	usint line,row;
+	int value;
 };
 
 class TokenList {
@@ -74,4 +76,4 @@ public:
 	void lexing();
 };
 
-#endif // SGLR_SCM_LEXER_H_
+#endif // UNIQUE_UCM_LEXER_H_

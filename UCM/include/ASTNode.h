@@ -1,5 +1,5 @@
-#ifndef SGLR_SCM_ASTNODE_H_
-#define SGLR_SCM_ASTNODE_H_
+#ifndef UNIQUE_UCM_ASTNODE_H_
+#define UNIQUE_UCM_ASTNODE_H_
 
 #include "lexer.h"
 #include <vector>
@@ -7,20 +7,19 @@
 typedef Token Terminal;
 class ExprNode;
 
-// factor -> PTHL expr PTHR | NUM
+// factor -> PTHL expr PTHR | NUM | IDN (NUM + IDN = operand)
 class FactorNode {
 private:
-	Terminal *number;
+	Terminal *operand;
 	ExprNode *factor;
 public:
 	FactorNode();
 	~FactorNode();
-	void setNumber(Terminal *num);
+	void setOperand(Terminal *ope);
 	void setFactor(ExprNode *fac);
-	Terminal *getNumber() const;
+	Terminal *getOperand() const;
 	ExprNode *getFactor() const;
 	void show();
-	int getResult();
 };
 
 // term -> factor ((ADD|SUB) factor)*
@@ -31,11 +30,15 @@ private:
 public:
 	TermNode();
 	~TermNode();
+	bool factorEmpty();
+	bool operatorEmpty();
+	usint getFactorSize() const;
+	bool onlyFactor();
 	void addFactor(FactorNode *factorN);
 	void addOperator(Terminal *ter);
-	int termOpMake(usint index, int a, int b);
+	FactorNode *getFactor(usint index) const;
+	Terminal *getOperator(usint index) const;
 	void show();
-	int getResult();
 };
 
 // expr -> term ((MUL|DIV) term)*
@@ -46,24 +49,43 @@ private:
 public:
 	ExprNode();
 	~ExprNode();
+	bool factorEmpty();
+	bool operatorEmpty();
+	usint getFactorSize() const;
+	bool onlyFactor();
 	void addFactor(TermNode *termN);
 	void addOperator(Terminal *ter);
-	int exprOpMake(usint index, int a, int b);
+	TermNode *getFactor(usint index) const;
+	Terminal *getOperator(usint index) const;
 	void show();
-	int getResult();
 };
 
-// statExpr -> expr
+// assign -> IDN ASS expr
+class AssignNode {
+private:
+	Terminal *identifier;
+	ExprNode *factor;
+public:
+	AssignNode();
+	~AssignNode();
+	void setIdentifier(Terminal *idn);
+	void setFactor(ExprNode *exprN);
+	Terminal *getIdentifier() const;
+	ExprNode *getFactor() const;
+	void show();
+};
+
+// statExpr -> assign+
 class StatExprNode {
 private:
-	ExprNode *factor;
+	std::vector<AssignNode*> factors;
 public:
 	StatExprNode();
 	~StatExprNode();
-	void setFactor(ExprNode *fac);
-	ExprNode *getFactor() const;
+	usint getFactorSize() const;
+	void addFactor(AssignNode *fac);
+	AssignNode *getFactor(usint index) const;
 	void show();
-	int getResult();
 };
 
-#endif // SGLR_SCM_ASTNODE_H_
+#endif // UNIQUE_UCM_ASTNODE_H_

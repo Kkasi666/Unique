@@ -1,0 +1,16 @@
+#ifndef UNIQUE_UCM_BYTECODE_
+#define UNIQUE_UCM_BYTECODE_
+
+enum command {
+	NOP   = 0x0000,
+	PUSH  = 0x0001,
+	POP   = 0x0002,
+	ADD   = 0x0003,
+	SUB   = 0x0004,
+	MUL   = 0x0005,
+	DIV   = 0x0006,
+	LOAD  = 0x0007, // load [ip]
+	STORE = 0x0008 // store [ip]
+};
+
+#endif // UNIQUE_UCM_BYTECODE_

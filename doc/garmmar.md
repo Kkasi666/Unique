@@ -1,7 +1,20 @@
 # grammar
+```
+PTHL -> '('
+PTHR -> ')'
+ADD -> '+'
+SUB -> '-'
+MUL -> '*'
+DIV -> '/'
+ASS -> '='
+NUM -> ('-')[0-9]+
+IDN -> ([a-z] | [A-Z])*
+CMT -> ("\\")(!('\n') -> skip
+SPA -> ' ' | '\t' | '\n'  -> skip
 
-G(S):
-1. factor -> PTHL expr PTHR | NUM
-2. term -> factor ((ADD|SUB) factor)*
-3. expr -> term ((MUL|DIV) term)*
-4. statExpr -> expr
+factor -> PTHL expr PTHR | NUM | IDN
+term -> factor ((ADD|SUB) factor)*
+expr -> term ((MUL|DIV) term)*
+assign -> IDN ASS expr
+statExpr -> assign+
+```

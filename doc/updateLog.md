@@ -10,11 +10,16 @@
 
 ## [update] v0.0.3 2022.7.7 20:56
 1. AST is json!
-
+eddd
 ## [update] v0.0.4 2022.7.10 11:20
 1. Sopport neg-number.
-2. fix some bug.
+2. Fix some bug.
+
+## [update] v0.1.0 2022.7.27 22:06
+1. Add assignment statement.
+2. The stat statement's grammar is change.
+3. Can compiling a source to a byte code.
 
 # Coming Soon
-1. assignment statement.
-2. ...
+1. Unique Virtual Machine
+2. More...

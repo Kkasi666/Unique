@@ -1,15 +1,15 @@
-CPPC := g++
-MKDIR := mkdir
+CPPC := g++ # you also can use 'gcc' or 'lang++'.
+MKDIR := makdir
+DELFILES := del # if use 'del' couldn't pass, you can try using 'rm'.
 
 CPP_INCLUDE := -I"./include/"
-CPP_SOURCE  := lexer ASTNode parser main
+CPP_SOURCE  := fileAPI proLoader lexer ASTNode parser byteCode builder byteWriter main
 
 BUILDDIR := ./build
 SRCDIR   := ./src
 
 OBJECTS := $(foreach src, $(CPP_SOURCE), $(BUILDDIR)/$(src).o)
-
-OUTPUT  := $(BUILDDIR)/main
+OUTPUT  := $(BUILDDIR)/quec
 
 $(BUILDDIR)/%.o: $(SRCDIR)/%.cpp
 	-$(MKDIR) build
@@ -19,10 +19,12 @@ $(OUTPUT): $(OBJECTS)
 	-$(MKDIR) build
 	$(CPPC) -o $@ $(OBJECTS)
 
-.PHONY: build
-build: $(OUTPUT)
-	@echo "done!"
+# .PHONY: build
+# build: $(OUTPUT)
+# @echo "done!"
 
 .PHONY: clean
 clean:
-	-rm $(OBJECTS)
+	cd build && \
+	$(DELFILES) $(foreach src, $(CPP_SOURCE), $(src).o) && \
+	cd ../
