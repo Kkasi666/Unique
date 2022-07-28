@@ -15,5 +15,5 @@
 # Release
 ## Compiler
 ### v0.1.0
-1. [source code](./Release/Compiler/v0.1.0/quec_sourcecode.zip)
-2. [WIN32](./Release/Compiler/v0.1.0/win32_quec.zip)
+1. [source code](https://www.123pan.com/s/tl98Vv-vR4pA)
+2. [WIN32](https://www.123pan.com/s/tl98Vv-dR4pA)
