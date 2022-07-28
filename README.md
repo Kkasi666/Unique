@@ -15,8 +15,5 @@
 # Release
 ## Compiler
 ### v0.1.0
-|   Author  |    OS     | app |
-|:---------:|:---------:|:---------:|
-|   Kkasi666   |    WIN32    | [quec](./Release/Compiler/v0.1.0/win32_quec.zip) |
-
-Welcome to add else version for releasing by yourself.
+1. [source code](./Release/Compiler/v0.1.0/quec_sourcecode.zip)
+2. [WIN32](./Release/Compiler/v0.1.0/win32_quec.zip)
