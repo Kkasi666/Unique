@@ -21,5 +21,5 @@ eddd
 3. Can compiling a source to a byte code.
 
 # Coming Soon
-1. Unique Virtual Machine
+1. Unique Virtual Machine.
 2. More...

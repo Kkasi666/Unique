@@ -12,8 +12,11 @@
 1. [updateLog](./doc/updateLog.md)
 2. [grammar](./doc/garmmar.md)
 
-# Compiler
-## v0.1.0
-|   Author  |    OS     | installer |
+# Release
+## Compiler
+### v0.1.0
+|   Author  |    OS     | app |
 |:---------:|:---------:|:---------:|
-|   Kkasi666   |    win7    |   [quec](./Compiler/v0.1.0/quec.exe)     |
+|   Kkasi666   |    WIN32    | [quec](./Release/Compiler/v0.1.0/win32_quec.exe) |
+
+Welcome to add else version for releasing by yourself.
