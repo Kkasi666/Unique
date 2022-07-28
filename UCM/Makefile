@@ -1,5 +1,5 @@
 CPPC := g++ # you also can use 'gcc' or 'lang++'.
-MKDIR := makdir
+MKDIR := mkdir
 DELFILES := del # if use 'del' couldn't pass, you can try using 'rm'.
 
 CPP_INCLUDE := -I"./include/"
