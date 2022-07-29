@@ -1,8 +1,14 @@
+// Copyright 2022 Source Speace Studio
+// License(GPLv3.0)
+// Author: Kkasi
+// This is defined ast node.
+
 #ifndef UNIQUE_UCM_ASTNODE_H_
 #define UNIQUE_UCM_ASTNODE_H_
 
-#include "lexer.h"
 #include <vector>
+#include "def.h"
+#include "lexer.h"
 
 typedef Token Terminal;
 class ExprNode;

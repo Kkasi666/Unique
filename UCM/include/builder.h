@@ -1,11 +1,16 @@
+// Copyright 2022 Source Speace Studio
+// License(GPLv3.0)
+// Author: Kkasi
+// This can make ast to byteCode.
+
 #ifndef UNIQUE_UCM_BUILDER_
 #define UNIQUE_UCM_BUILDER_
 
 #include <string>
 #include <vector>
 #include <map>
-#include "ASTNode.h"
 #include "def.h"
+#include "ASTNode.h"
 #include "byteCode.h"
 
 class Builder {
@@ -15,7 +20,7 @@ private:
 	usint idCur;
 	std::vector<byte> byteCode;
 protected:
-	void makeByteCode(enum command com, int operand);
+	void makeByteCode(opCode op, int operand);
 	void visitTermOp(Terminal *terl);
 	void visitExprOp(Terminal *terl);
 	void visitFactorNode(FactorNode *fac);
@@ -31,6 +36,5 @@ public:
 	std::vector<byte> getCode() const;
 	void showByteCode();
 };
-
 
 #endif // UNIQUE_UCM_BUILDER_

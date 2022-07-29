@@ -1,7 +1,10 @@
+// Copyright 2022 Source Speace Studio
+// License(GPLv3.0)
+// Author: Kkasi
+// This is make tokens to ast.
+
 #include <iostream>
 #include <string>
-#include "def.h"
-#include "lexer.h"
 #include "parser.h"
 
 Parser::Parser()

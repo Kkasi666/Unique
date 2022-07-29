@@ -1,3 +1,8 @@
+// Copyright 2022 Source Speace Studio
+// License(GPLv3.0)
+// Author: Kkasi
+// This is make source code to tokens.
+
 #ifndef UNIQUE_UCM_LEXER_H_
 #define UNIQUE_UCM_LEXER_H_
 
@@ -29,6 +34,11 @@ enum tokenType getBraType(const char chr);
 enum tokenType getOpType(const char *chr, int row, usint &len);
 
 class Token {
+private:
+	enum tokenType type;
+	std::string data;
+	usint line,row;
+	int value;
 public:
 	Token();
 	Token(enum tokenType type,const std::string data,int line,int row);
@@ -39,14 +49,11 @@ public:
 	int getRow() const;
 	int getValue() const;
 	void show();
-private:
-	enum tokenType type;
-	std::string data;
-	usint line,row;
-	int value;
 };
 
 class TokenList {
+private:
+	std::vector<Token*> tlist;
 public:
 	TokenList();
 	~TokenList();
@@ -56,8 +63,6 @@ public:
 	usint getSize() const;
 	enum tokenType getTokenType(usint index) const;
 	std::string getTokenData(usint index) const;
-private:
-	std::vector<Token*> tlist;
 };
 
 class Lexer {

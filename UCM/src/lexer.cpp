@@ -1,6 +1,11 @@
+// Copyright 2022 Source Speace Studio
+// License(GPLv3.0)
+// Author: Kkasi
+// This is make source code to tokens.
+
 #include <iostream>
-#include "lexer.h"
 #include <vector>
+#include "lexer.h"
 
 bool isNumber(char chr) {
 	return chr>='0' && chr<='9';

@@ -1,4 +1,8 @@
-#include <malloc.h>
+// Copyright 2022 Source Speace Studio
+// License(GPLv3.0)
+// Author: Kkasi
+// This is defined ast node.
+
 #include "ASTNode.h"
 
 /* class FactorNode */
@@ -30,8 +34,8 @@ ExprNode *FactorNode::getFactor() const {
 
 void FactorNode::show() {
 	if(operand) {
-		printf("{ \"Factor\": { \"operand\": "); // token
-		operand->show();
+		printf("{ \"Factor\": { \"operand\": ");
+		operand->show(); // token
 		printf(" } }");
 	} else if(factor) {
 		printf("{ \"Factor\": { ");

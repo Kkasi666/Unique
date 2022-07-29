@@ -1,3 +1,8 @@
+// Copyright 2022 Source Speace Studio
+// License(GPLv3.0)
+// Author: Kkasi
+// This can make ast to byteCode.
+
 #include "builder.h"
 
 Builder::Builder()
@@ -8,8 +13,8 @@ Builder::Builder(StatExprNode *stat)
 
 Builder::~Builder() {}
 
-void Builder::makeByteCode(command com, int operand) {
-	byteCode.push_back(com);
+void Builder::makeByteCode(opCode op, int operand) {
+	byteCode.push_back(op);
 	byteCode.push_back(operand);
 }
 

@@ -1,3 +1,8 @@
+// Copyright 2022 Source Speace Studio
+// License(GPLv3.0)
+// Author: Kkasi
+// This is make tokens to ast.
+
 #ifndef UNIQUE_UCM_PARSER_H_
 #define UNIQUE_UCM_PARSER_H_
 

@@ -1,6 +1,11 @@
+// Copyright 2022 Source Speace Studio
+// License(GPLv3.0)
+// Author: Kkasi
+// This define hasOperand.
+
 #include "byteCode.h"
 
-int operand[] {
+int hasOperand[] {
 	[NOP]   = 0,
 	[PUSH]  = 1,
 	[POP]   = 0,

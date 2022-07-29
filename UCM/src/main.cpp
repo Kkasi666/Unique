@@ -1,5 +1,10 @@
+// Copyright 2022 Source Speace Studio
+// License(GPLv3.0)
+// Author: Kkasi
+// This is main, a compiler.
+
 #include <iostream>
-#include "fileAPI.h"
+#include "fileOperate.h"
 #include "proLoader.h"
 #include "lexer.h"
 #include "parser.h"
@@ -10,6 +15,7 @@
 #define CODEMAXLEN 100
 
 int main(int argc, char **argv) {
+	/* head */
 	printf("Unique 0.1.1 (build for mingw32)\n");
 	std::string fileName, workDir;
 	if(argc==2) {
@@ -23,11 +29,13 @@ int main(int argc, char **argv) {
 		return -1;
 	}
 
+	/* Load project */
 	ProLoader pler(workDir,CODEMAXLEN);
 	pler.initFile(fileName);
 	std::string scode=pler.getBuffer();
 	// printf("code:\n%s\n",scode.c_str());
 
+	/* Lexing */
 	Lexer lexer;
 	lexer.setCode(scode);
 	lexer.lexing();
@@ -39,19 +47,23 @@ int main(int argc, char **argv) {
 	}
 	*/
 
+	/* Parsing */
 	Parser parser;
 	parser.setTokenList(tls);
 	parser.parsing();
 	// parser.showAST();
 
+	/* Building */
 	Builder builder(parser.getAST());
 	builder.building();
 	// builder.showByteCode();
 
+	/* Writing byte code into file */
 	ByteWriter bWriter(workDir,fileName);
 	bWriter.setCode(builder.getCode());
 	bWriter.writing();
 
+	/* finish */
 	printf("[Compiler] Compilation finish!\n");
 
 	return 0;

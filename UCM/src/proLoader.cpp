@@ -1,3 +1,8 @@
+// Copyright 2022 Source Speace Studio
+// License(GPLv3.0)
+// Author: Kkasi
+// This is load source code project to compile.
+
 #include "proLoader.h"
 
 ProLoader::ProLoader(std::string workDir, usint maxLen)

@@ -1,7 +1,12 @@
+// Copyright 2022 Source Speace Studio
+// License(GPLv3.0)
+// Author: Kkasi
+// This define opCodes.
+
 #ifndef UNIQUE_UCM_BYTECODE_
 #define UNIQUE_UCM_BYTECODE_
 
-enum command {
+enum opCode {
 	NOP   = 0x0000,
 	PUSH  = 0x0001,
 	POP   = 0x0002,

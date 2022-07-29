@@ -1,9 +1,14 @@
+// Copyright 2022 Source Speace Studio
+// License(GPLv3.0)
+// Author: Kkasi
+// This is writing btyeCode into a file.
+
 #ifndef UNIQUE_UCM_BYTEWRITER_H_
 #define UNIQUE_UCM_BYTEWRITER_H_
 
-#include "def.h"
-#include <vector>
 #include <string>
+#include <vector>
+#include "def.h"
 
 class ByteWriter
 {
