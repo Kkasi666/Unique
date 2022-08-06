@@ -1,31 +1,31 @@
 // Copyright 2022 Source Speace Studio
 // License(GPLv3.0)
 // Author: Kkasi
-// This can make ast to byteCode.
+// This can turn AST into byteCode.
 
-#include "builder.h"
+#include "constructer.h"
 
-Builder::Builder()
+Constructer::Constructer()
 : stat(nullptr), idCur(0) {}
 
-Builder::Builder(StatExprNode *stat)
+Constructer::Constructer(StatExprNode *stat)
 	: stat(stat), idCur(0) {}
 
-Builder::~Builder() {}
+Constructer::~Constructer() {}
 
-void Builder::makeByteCode(opCode op, int operand) {
+void Constructer::makeByteCode(opCode op, int operand) {
 	byteCode.push_back(op);
 	byteCode.push_back(operand);
 }
 
-void Builder::visitTermOp(Terminal *terl) {
+void Constructer::visitTermOp(Terminal *terl) {
 	switch (terl->getType()) {
 		case T_MUL: makeByteCode(MUL, 0x0000); break;
 		case T_DIV:  makeByteCode(DIV, 0x0000); break;
 		default: makeByteCode(NOP,0x0000); break;
 	}
 }
-void Builder::visitExprOp(Terminal *terl) {
+void Constructer::visitExprOp(Terminal *terl) {
 	switch (terl->getType()) {
 		case T_ADD: makeByteCode(ADD, 0x0000); break;
 		case T_SUB:  makeByteCode(SUB, 0x0000); break;
@@ -33,7 +33,7 @@ void Builder::visitExprOp(Terminal *terl) {
 	}
 }
 
-void Builder::visitFactorNode(FactorNode *fac) {
+void Constructer::visitFactorNode(FactorNode *fac) {
 	if(fac->getOperand()) {
 		if(fac->getOperand()->getType()==T_NUM) {
 			int value = fac->getOperand()->getValue();
@@ -49,7 +49,7 @@ void Builder::visitFactorNode(FactorNode *fac) {
 		return; // error
 	}
 }
-void Builder::visitTermNode(TermNode *ter) {
+void Constructer::visitTermNode(TermNode *ter) {
 		if(!ter->factorEmpty()) {
 		if(ter->onlyFactor()) {
 			visitFactorNode(ter->getFactor(0));
@@ -68,7 +68,7 @@ void Builder::visitTermNode(TermNode *ter) {
 		return; // error
 	}
 }
-void Builder::visitExprNode(ExprNode *expr) {
+void Constructer::visitExprNode(ExprNode *expr) {
 	if(!expr->factorEmpty()) {
 		if(expr->onlyFactor()) {
 			visitTermNode(expr->getFactor(0));
@@ -88,7 +88,7 @@ void Builder::visitExprNode(ExprNode *expr) {
 	}
 }
 
-void Builder::visitAssignNode(AssignNode *ass) {
+void Constructer::visitAssignNode(AssignNode *ass) {
 	if(ass->getFactor()) { // make exprNode
 		visitExprNode(ass->getFactor());
 		if(ass->getIdentifier()) { // 
@@ -101,7 +101,7 @@ void Builder::visitAssignNode(AssignNode *ass) {
 	}
 	
 }
-void Builder::visitStatExprNode(StatExprNode *stat) {
+void Constructer::visitStatExprNode(StatExprNode *stat) {
 	if(stat) {
 		for(int i=0;i<stat->getFactorSize();i++) {
 			visitAssignNode(stat->getFactor(i));
@@ -109,15 +109,15 @@ void Builder::visitStatExprNode(StatExprNode *stat) {
 	}
 }
 
-void Builder::building() {
+void Constructer::constructing() {
 	visitStatExprNode(stat);
 }
 
-std::vector<byte> Builder::getCode() const {
+std::vector<byte> Constructer::getCode() const {
 	return this->byteCode;
 }
 
-void Builder::showByteCode() {
+void Constructer::showByteCode() {
 	printf("\n");
 	for(int i=0; i<byteCode.size(); i+=2) {
 		printf("%d %d\n",byteCode.at(i),byteCode.at(i+1));

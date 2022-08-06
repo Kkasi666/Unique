@@ -1,7 +1,7 @@
 // Copyright 2022 Source Speace Studio
 // License(GPLv3.0)
 // Author: Kkasi
-// This is defined ast node.
+// This is defined all kind of AST nodes.
 
 #include "ASTNode.h"
 

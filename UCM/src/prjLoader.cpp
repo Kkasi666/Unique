@@ -3,14 +3,19 @@
 // Author: Kkasi
 // This is load source code project to compile.
 
-#include "proLoader.h"
+#include "prjLoader.h"
 
-ProLoader::ProLoader(std::string workDir, usint maxLen)
+PrjLoader::PrjLoader(std::string workDir, usint maxLen)
 	: workDir(workDir), maxLen(maxLen), len(0) {
 }
 
-void ProLoader::initFile(std::string fileName) {
+void PrjLoader::initFile(std::string fileName) {
 	std::ifstream inf(workDir+"/"+fileName+".que",std::ios::in);
+	if(!inf) {
+		printf("can't open the file '%s.que'.\n",fileName.c_str());
+		exit(-1);
+		return;
+	}
 	while (len<maxLen) {
 		char temC = inf.get();
 		if(temC=='\n') {
@@ -23,9 +28,9 @@ void ProLoader::initFile(std::string fileName) {
 	inf.close();
 }
 
-std::string ProLoader::getBuffer() const {
+std::string PrjLoader::getBuffer() const {
 	std::string tempStr=this->buffer;
 	return tempStr;
 }
 
-ProLoader::~ProLoader() {}
+PrjLoader::~PrjLoader() {}

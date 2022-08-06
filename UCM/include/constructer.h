@@ -1,10 +1,10 @@
 // Copyright 2022 Source Speace Studio
 // License(GPLv3.0)
 // Author: Kkasi
-// This can make ast to byteCode.
+// This can turn AST into byteCode.
 
-#ifndef UNIQUE_UCM_BUILDER_
-#define UNIQUE_UCM_BUILDER_
+#ifndef UNIQUE_UCM_CONSTRUCTER_
+#define UNIQUE_UCM_CONSTRUCTER_
 
 #include <string>
 #include <vector>
@@ -13,7 +13,7 @@
 #include "ASTNode.h"
 #include "byteCode.h"
 
-class Builder {
+class Constructer {
 private:
 	StatExprNode *stat;
 	std::map<std::string,usint> variableTable;
@@ -29,12 +29,12 @@ protected:
 	void visitAssignNode(AssignNode *ass);
 	void visitStatExprNode(StatExprNode *stat);
 public:
-	Builder();
-	Builder(StatExprNode *stat);
-	~Builder();
-	void building();
+	Constructer();
+	Constructer(StatExprNode *stat);
+	~Constructer();
+	void constructing();
 	std::vector<byte> getCode() const;
 	void showByteCode();
 };
 
-#endif // UNIQUE_UCM_BUILDER_
+#endif // UNIQUE_UCM_CONSTRUCTER_

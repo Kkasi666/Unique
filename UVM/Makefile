@@ -3,13 +3,13 @@ MKDIR := mkdir
 DELFILES := del # if use 'del' couldn't pass, you can try using 'rm'.
 
 CPP_INCLUDE := -I"./include/"
-CPP_SOURCE  := fileOperate prjLoader lexer ASTNode parser byteCode constructer byteWriter main
+CPP_SOURCE  := fileOperate bytePrjLoader byteCode executer main
 
 BUILDDIR := ./build
 SRCDIR   := ./src
 
 OBJECTS := $(foreach src, $(CPP_SOURCE), $(BUILDDIR)/$(src).o)
-OUTPUT  := $(BUILDDIR)/quec
+OUTPUT  := $(BUILDDIR)/que
 
 $(BUILDDIR)/%.o: $(SRCDIR)/%.cpp
 	-$(MKDIR) build

@@ -1,7 +1,7 @@
 // Copyright 2022 Source Speace Studio
 // License(GPLv3.0)
 // Author: Kkasi
-// This is make tokens to ast.
+// This is turning tokens to AST.
 
 #include <iostream>
 #include <string>

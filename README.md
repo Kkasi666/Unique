@@ -3,17 +3,24 @@
 # Information
 	A programming language is prepared for SourceSpace Studio coding.
 
-# Make
-1. `cd UCM` to into Makefile's path. 
-2. Use `make` or `mingw32-make` to make file.
-3. `./build/quec [workDir] (proName)` to run it.
+# How To Make?
+### 0. By default, I think you are in the `Unique` directory and your computer have `Make`.
+### 1. Make Unique compiler.
+1) `cd UCM` to into Makefile's path. 
+2) Use `make` or `mingw32-make` to make file.
+3) `./build/quec [workDir] (proName)` to run it or set environment variable that use `quec [workDir] (proName)` to run.
+
+### 2. Make Unique VM.
+1) `cd ../UVM` to into Makefile's path. 
+2) Use `make` or `mingw32-make` to make file.
+3) `./build/que [workDir] (proName)` to run it or set environment variable that use `que [workDir] (proName)` to run.
+
+### 3. Try C\ompiler a unique code.
+1) There is a unique code file is called `pro1.que`  in `./testbench/test1`.
+2) `cd ./testbench/test1` to into workDir.
+3) `quec pro1` to compile.
+4) `que pro1` to execute unique byte code.
 
 # More Info
 1. [updateLog](./doc/updateLog.md)
 2. [grammar](./doc/garmmar.md)
-
-# Release
-## Compiler
-### v0.1.0
-1. [source code](https://www.123pan.com/s/tl98Vv-vR4pA)
-2. [WIN32](https://www.123pan.com/s/tl98Vv-dR4pA)

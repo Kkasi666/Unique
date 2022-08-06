@@ -10,17 +10,17 @@
 #include <fstream>
 #include "def.h"
 
-class ProLoader {
+class PrjLoader {
 private:
 	std::string workDir;
 	std::string buffer;
 	usint maxLen;
 	usint len;
 public:
-	ProLoader(std::string workDir, usint maxLen);
+	PrjLoader(std::string workDir, usint maxLen);
 	void initFile(std::string fileName);
 	std::string getBuffer() const;
-	~ProLoader();
+	~PrjLoader();
 };
 
 #endif // UNIQUE_UCM_PROLOADER_H_

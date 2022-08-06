@@ -5,10 +5,10 @@
 
 #include <iostream>
 #include "fileOperate.h"
-#include "proLoader.h"
+#include "prjLoader.h"
 #include "lexer.h"
 #include "parser.h"
-#include "builder.h"
+#include "constructer.h"
 #include "byteWriter.h"
 
 
@@ -16,7 +16,7 @@
 
 int main(int argc, char **argv) {
 	/* head */
-	printf("Unique 0.1.1 (build for mingw32)\n");
+	printf("Unique compiler 0.1.2\n");
 	std::string fileName, workDir;
 	if(argc==2) {
 		workDir = getWorkPath();
@@ -30,9 +30,10 @@ int main(int argc, char **argv) {
 	}
 
 	/* Load project */
-	ProLoader pler(workDir,CODEMAXLEN);
-	pler.initFile(fileName);
-	std::string scode=pler.getBuffer();
+	PrjLoader pjler(workDir,CODEMAXLEN);
+	pjler.initFile(fileName);
+	std::string scode=pjler.getBuffer();
+	printf("[ProjectLoader] Loading complete!\n");
 	// printf("code:\n%s\n",scode.c_str());
 
 	/* Lexing */
@@ -41,6 +42,7 @@ int main(int argc, char **argv) {
 	lexer.lexing();
 	TokenList *tls = lexer.getTokenList();
 	if(lexer.isError()) {return -2;}
+	printf("[Lexer] Lexing complete!\n");
 	/*
 	for(int i=0;i<tls->getSize();i++) {
 		printf("{ type: %d, data: %s }\n",tls->getTokenType(i), tls->getTokenData(i).c_str());
@@ -51,20 +53,20 @@ int main(int argc, char **argv) {
 	Parser parser;
 	parser.setTokenList(tls);
 	parser.parsing();
+	printf("[Praser] Prasing complete!\n");
 	// parser.showAST();
 
-	/* Building */
-	Builder builder(parser.getAST());
-	builder.building();
-	// builder.showByteCode();
+	/* Constructing */
+	Constructer constructer(parser.getAST());
+	constructer.constructing();
+	printf("[Constructer] Constructing complete!\n");
+	// constructer.showByteCode();
 
 	/* Writing byte code into file */
 	ByteWriter bWriter(workDir,fileName);
-	bWriter.setCode(builder.getCode());
+	bWriter.setCode(constructer.getCode());
 	bWriter.writing();
-
-	/* finish */
-	printf("[Compiler] Compilation finish!\n");
+	printf("[ByteWriter] Writing complete!\n");
 
 	return 0;
 }

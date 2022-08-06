@@ -1,7 +1,7 @@
 // Copyright 2022 Source Speace Studio
 // License(GPLv3.0)
 // Author: Kkasi
-// This is make source code to tokens.
+// This is turning source code into tokens.
 
 #include <iostream>
 #include <vector>

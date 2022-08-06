@@ -20,6 +20,10 @@ eddd
 2. The stat statement's grammar is change.
 3. Can compiling a source to a byte code.
 
+## [update] v0.1.1 2022.8.6 22:20
+1. v0.1.0 Unique Virtual Machine was finish!
+2. fix some bug.
+
 # Coming Soon
-1. Unique Virtual Machine.
+1. More grammar.
 2. More...
