@@ -15,7 +15,7 @@
 2) Use `make` or `mingw32-make` to make file.
 3) `./build/que [workDir] (proName)` to run it or set environment variable that use `que [workDir] (proName)` to run.
 
-### 3. Try C\ompiler a unique code.
+### 3. Try Compiler a unique code.
 1) There is a unique code file is called `pro1.que`  in `./testbench/test1`.
 2) `cd ./testbench/test1` to into workDir.
 3) `quec pro1` to compile.
