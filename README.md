@@ -24,3 +24,7 @@
 # More Info
 1. [updateLog](./doc/updateLog.md)
 2. [grammar](./doc/garmmar.md)
+
+# How to Contact Us?
+1. Add me QQ : 3572113478
+2. Send e-mail to 3572113478@qq.com
