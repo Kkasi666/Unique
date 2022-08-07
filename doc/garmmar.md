@@ -9,7 +9,7 @@ DIV -> '/'
 ASS -> '='
 NUM -> ('-')[0-9]+
 IDN -> ([a-z] | [A-Z])*
-CMT -> ("//")(!('\n') -> skip
+CMT -> ("\\")(!('\n') -> skip
 SPA -> ' ' | '\t' | '\n'  -> skip
 
 factor -> PTHL expr PTHR | NUM | IDN
