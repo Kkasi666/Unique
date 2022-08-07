@@ -36,17 +36,17 @@ void Executer::visitOpCode() {
 	ByteCode bCode = bCodes.at(ip);
 	int op1,op2;
 	switch(bCode.getOpCode()) {
-		case ADD: op1 = vstack.top(); vstack.pop();
-		          op2 = vstack.top(); vstack.pop();
+		case ADD: op2 = vstack.top(); vstack.pop();
+		          op1 = vstack.top(); vstack.pop();
 		          vstack.push(op1 + op2); break;
-		case SUB: op1 = vstack.top(); vstack.pop();
-		          op2 = vstack.top(); vstack.pop();
+		case SUB: op2 = vstack.top(); vstack.pop();
+		          op1 = vstack.top(); vstack.pop();
 		          vstack.push(op1 - op2); break;
-		case MUL: op1 = vstack.top(); vstack.pop();
-		          op2 = vstack.top(); vstack.pop();
+		case MUL: op2 = vstack.top(); vstack.pop();
+		          op1 = vstack.top(); vstack.pop();
 		          vstack.push(op1 * op2); break;
-		case DIV: op1 = vstack.top(); vstack.pop();
-		          op2 = vstack.top(); vstack.pop();
+		case DIV: op2 = vstack.top(); vstack.pop();
+		          op1 = vstack.top(); vstack.pop();
 		          vstack.push(op1 / op2); break;
 		default: break;
 	}

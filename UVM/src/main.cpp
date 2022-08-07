@@ -27,7 +27,7 @@ int main(int argc, char **argv) {
 	BytePrjLoader pler(workDir);
 	pler.initFile(fileName);
 	printf("[ByteProjectLoader] Loading complete!\n");
-	// printf("code:\n%s\n",scode.c_str());
+	// printf("code:\n%s\n",.c_str());
 
 	/* executing */
 	Executer executer(pler.getCodes());
