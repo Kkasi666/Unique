@@ -11,29 +11,34 @@
 #include "constructer.h"
 #include "byteWriter.h"
 
-
 #define CODEMAXLEN 100
 
 int main(int argc, char **argv) {
 	/* head */
-	printf("Unique compiler 0.1.2\n");
-	std::string fileName, workDir;
+	// printf("Unique compiler 0.1.3\n");
+	std::string fileName, workDir, fileNameBase;
 	if(argc==2) {
 		workDir = getWorkPath();
 		fileName = argv[1];
-	} else if (argc==3) {
-		workDir = argv[1];
-		fileName = argv[2];
+		if(fileName.substr(fileName.find_last_of('.')+1)!="que") {
+			printf("unique.callexe.IsntQueFile Error:\n"\
+				"\tthe file '%s' isn't unique file.\n"\
+				"\t(Maybe you input fileName isn't add suffix.)\n",fileName.c_str());
+			exit(IsntQueFile);
+		}
 	} else {
-		printf("the call way is wrong!\ntrue way:\nquec [workDir] (proName)\n");
-		return -1;
+		printf("unique.callexe.CallWayWrong Error:\n"\
+			"\tthe call way is wrong!\n"\
+			"\ttrue way:\n"\
+			"\tquec (proName)\n");
+		exit(CallWayWrong);
 	}
 
 	/* Load project */
 	PrjLoader pjler(workDir,CODEMAXLEN);
 	pjler.initFile(fileName);
 	std::string scode=pjler.getBuffer();
-	printf("[ProjectLoader] Loading complete!\n");
+	// printf("[ProjectLoader] Loading complete!\n");
 	// printf("code:\n%s\n",scode.c_str());
 
 	/* Lexing */
@@ -41,32 +46,31 @@ int main(int argc, char **argv) {
 	lexer.setCode(scode);
 	lexer.lexing();
 	TokenList *tls = lexer.getTokenList();
-	if(lexer.isError()) {return -2;}
-	printf("[Lexer] Lexing complete!\n");
-	/*
-	for(int i=0;i<tls->getSize();i++) {
-		printf("{ type: %d, data: %s }\n",tls->getTokenType(i), tls->getTokenData(i).c_str());
-	}
-	*/
+	// printf("[Lexer] Lexing complete!\n");
+	// for(int i=0;i<tls->getSize();i++) {
+	// 	tls->getToken(i)->show();
+	// 	printf("\n");
+	// }
 
 	/* Parsing */
 	Parser parser;
 	parser.setTokenList(tls);
 	parser.parsing();
-	printf("[Praser] Prasing complete!\n");
+	// printf("[Praser] Prasing complete!\n");
 	// parser.showAST();
 
 	/* Constructing */
 	Constructer constructer(parser.getAST());
 	constructer.constructing();
-	printf("[Constructer] Constructing complete!\n");
+	// printf("[Constructer] Constructing complete!\n");
 	// constructer.showByteCode();
 
 	/* Writing byte code into file */
-	ByteWriter bWriter(workDir,fileName);
+	fileNameBase = fileName.substr(0,fileName.find_last_of('.'));
+	ByteWriter bWriter(workDir,fileNameBase);
 	bWriter.setCode(constructer.getCode());
 	bWriter.writing();
-	printf("[ByteWriter] Writing complete!\n");
+	// printf("[ByteWriter] Writing complete!\n");
 
 	return 0;
 }

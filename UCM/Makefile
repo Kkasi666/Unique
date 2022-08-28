@@ -17,11 +17,11 @@ $(BUILDDIR)/%.o: $(SRCDIR)/%.cpp
 
 $(OUTPUT): $(OBJECTS)
 	-$(MKDIR) build
-	$(CPPC) -o $@ $(OBJECTS) -static-libstdc++
+	$(CPPC) -o $@ $(OBJECTS)
 
-# .PHONY: build
-# build: $(OUTPUT)
-# @echo "done!"
+.PHONY: build
+build: $(OUTPUT)
+	@echo "compiler done!"
 
 .PHONY: clean
 clean:

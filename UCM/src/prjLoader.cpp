@@ -10,11 +10,11 @@ PrjLoader::PrjLoader(std::string workDir, usint maxLen)
 }
 
 void PrjLoader::initFile(std::string fileName) {
-	std::ifstream inf(workDir+"/"+fileName+".que",std::ios::in);
+	std::ifstream inf(workDir+"/"+fileName,std::ios::in);
 	if(!inf) {
-		printf("can't open the file '%s.que'.\n",fileName.c_str());
-		exit(-1);
-		return;
+		printf("unique.compiler.projectLoader.CannotOpenFile Error:\n"\
+			"\tcan't open the file '%s'.\n",fileName.c_str());
+		exit(CannotOpenFile);
 	}
 	while (len<maxLen) {
 		char temC = inf.get();

@@ -13,7 +13,7 @@
 enum tokenType {
 	T_NULL=0,
 	T_NUM,
-	T_IDN,
+	T_WORD,
 	T_ASS,
 	T_ADD,
 	T_SUB,
@@ -21,17 +21,14 @@ enum tokenType {
 	T_DIV,
 	T_PTHL, // parentheses left
 	T_PTHR, 
-	// T_BRKL, // bracket left
-	// T_BRKR,
-	// T_BRCL, // Braces left
-	// T_BRCR,
-	T_CMT // comment
+	T_BRKL, // bracket left
+	T_BRKR,
+	T_BRCL, // Braces left
+	T_BRCR
 };
 
-bool isNumber(char chr);
-bool isWord(char chr);
 enum tokenType getBraType(const char chr);
-enum tokenType getOpType(const char *chr, int row, usint &len);
+enum tokenType getOpType(const char chr);
 
 class Token {
 private:
@@ -68,13 +65,21 @@ public:
 class Lexer {
 private:
 	std::string code;
+	std::string readData;
 	TokenList *tkl;
-	usint pos;
-	bool isErr;
+	usint pos, line, row;
+protected:
+	void next();
+	void nextRow(int step=1);
+	void nextLine();
+	void Word();
+	void Number();
+	void Oparetor();
+	void AssignSymbol();
+	void Braket();
 public:
 	Lexer();
 	~Lexer();
-	bool isError();
 	void setCode(std::string code);
 	std::string getCode() const;
 	TokenList *getTokenList();

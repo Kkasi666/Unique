@@ -1,0 +1,7 @@
+fun main() int {
+	char a := 'a'
+	string b := "aaaaaa"
+	int c := 123
+	float d := 1.23
+	ret 0
+}

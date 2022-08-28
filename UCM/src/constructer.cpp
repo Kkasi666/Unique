@@ -38,7 +38,7 @@ void Constructer::visitFactorNode(FactorNode *fac) {
 		if(fac->getOperand()->getType()==T_NUM) {
 			int value = fac->getOperand()->getValue();
 			makeByteCode(PUSH, value);
-		} else if (fac->getOperand()->getType()==T_IDN) {
+		} else if (fac->getOperand()->getType()==T_WORD) {
 			usint vId = variableTable[fac->getOperand()->getData()];
 			makeByteCode(LOAD, vId);
 		}
@@ -91,7 +91,7 @@ void Constructer::visitExprNode(ExprNode *expr) {
 void Constructer::visitAssignNode(AssignNode *ass) {
 	if(ass->getFactor()) { // make exprNode
 		visitExprNode(ass->getFactor());
-		if(ass->getIdentifier()) { // 
+		if(ass->getIdentifier()) {
 			std::string id=ass->getIdentifier()->getData();
 			if (!variableTable.count(id)) {
 				variableTable[id]=idCur++;

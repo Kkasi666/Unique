@@ -14,6 +14,17 @@ Parser::Parser()
 Parser::~Parser() {
 }
 
+void Parser::throwSyntaxWrong(std::string exceptedStr) {
+	if(pos>=tkl->getSize()) pos=tkl->getSize()-1;
+	printf("unique.compiler.parser.SyntaxWrong Error:\n"\
+	"\tIn %d:%d, excpted %s, before token'%s'\n"\
+	,tkl->getToken(pos)->getLine()\
+	,tkl->getToken(pos)->getRow()\
+	,exceptedStr.c_str()\
+	,tkl->getToken(pos)->getData().c_str());
+	exit(SyntaxWrong);
+}
+
 bool Parser::isNumTerminal() {
 	if(pos>=tkl->getSize()) return false;
 	return tkl->getToken(pos)->getType()==T_NUM;
@@ -21,7 +32,7 @@ bool Parser::isNumTerminal() {
 
 bool Parser::isIdnTerminal() {
 	if(pos>=tkl->getSize()) return false;
-	return tkl->getToken(pos)->getType()==T_IDN;
+	return tkl->getToken(pos)->getType()==T_WORD;
 }
 
 bool Parser::isTermOp() {
@@ -76,27 +87,27 @@ Terminal *Parser::number() {
 	if(!isNumTerminal()) {
 		return 0x0;
 	}
-	return tkl->getToken(pos++);
+	return tkl->getToken(pos);
 }
 
 Terminal *Parser::identifier() {
 	if(!isIdnTerminal()) {
 		return 0x0;
 	}
-	return tkl->getToken(pos++);
+	return tkl->getToken(pos);
 }
 
 Terminal *Parser::termOp() {
 	if(!isTermOp()) {
 		return 0x0;
 	}
-	return tkl->getToken(pos++);
+	return tkl->getToken(pos);
 }
 Terminal *Parser::exprOp() {
 	if(!isExprOp()) {
 		return 0x0;
 	}
-	return tkl->getToken(pos++);
+	return tkl->getToken(pos);
 }
 
 // factor -> PTHL expr PTHR | NUM | IDN
@@ -107,22 +118,24 @@ FactorNode *Parser::factor() {
 		FactorNode *fac=new FactorNode;
 		if(isNumTerminal()) {
 			fac->setOperand(number());
+			next();
 		} else if(isIdnTerminal()) {
 			fac->setOperand(identifier());
+			next();
 		} else if(isLeftPth()) {
 			next();// skip "("
 			if(isExprStart()) {
 				fac->setFactor(expr());
 			} else {
 				delete fac;
-				printf("[ParserError]factor error, had '(', but hadn't expr.");
+				throwSyntaxWrong("'(' | number | word");
 				return 0x0;
 			}
 			if(isRightPth()) {
 				next(); // skip ")"
 			} else {
 				delete fac;
-				printf("[ParserError]factor error, had expr, but hadn't ')'.");
+				throwSyntaxWrong("')'");
 				return 0x0;
 			}
 		}
@@ -133,13 +146,14 @@ FactorNode *Parser::factor() {
 // term -> factor ((MUL|DIV) factor)*
 TermNode *Parser::term() {
 	if(!isTermStart()) {
-		printf("[ParserError]make TermNode error, you use '%s'.\n", tkl->getToken(pos)->getData().c_str());
+		throwSyntaxWrong("'(' | number | word");
 		return 0x0;
 	} else {
 		TermNode *ter = new TermNode;
 		ter->addFactor(factor());
 		while(isTermOp()) {
 			ter->addOperator(termOp());
+			next();
 			ter->addFactor(factor());
 		}
 		return ter;
@@ -148,14 +162,15 @@ TermNode *Parser::term() {
 
 // expr -> term ((ADD|SUB) term)*
 ExprNode *Parser::expr() {
-	if(!isTermStart()) {
-		printf("[ParserError]make ExprNode error.\n");
+	if(!isExprStart()) {
+		throwSyntaxWrong("'(' | number | word");
 		return 0x0;
 	} else {
 		ExprNode *expr = new ExprNode;
 		expr->addFactor(term());
 		while(isExprOp()) {
 			expr->addOperator(exprOp());
+			next();
 			expr->addFactor(term());
 			
 		}
@@ -166,15 +181,16 @@ ExprNode *Parser::expr() {
 // assign -> IDN ASS expr
 AssignNode *Parser::assign() {
 	if(!isAssignStart()) {
-		printf("[ParserError]make AssignNode error.\n");
+		throwSyntaxWrong("a word");
 		return 0x0;
 	} else {
 		AssignNode * ass = new AssignNode;
 		ass->setIdentifier(identifier());
+		next();
 		if(isAssignment()) {
 			next(); // skip "="
 		} else {
-			printf("[ParserError]Assign error, expect '=', you use '%s'.\n",ass->getIdentifier()->getData().c_str());
+			throwSyntaxWrong("'='");
 			return 0x0;
 		}
 		ass->setFactor(expr());
@@ -186,7 +202,7 @@ AssignNode *Parser::assign() {
 // statExpr -> assign+
 StatExprNode *Parser::statExpr() {
 	if(!isStatStart()) {
-		printf("[ParserError]statExpr error.\n");
+		throwSyntaxWrong("a word");
 		return 0x0;
 	} else {
 		StatExprNode *stat = new StatExprNode;

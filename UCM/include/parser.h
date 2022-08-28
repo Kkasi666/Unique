@@ -23,6 +23,8 @@ private:
 	usint pos;
 	StatExprNode *stat;
 protected:
+	void throwSyntaxWrong(std::string exceptedStr);
+
 	bool isNumTerminal();
 	bool isIdnTerminal();
 	bool isTermOp();

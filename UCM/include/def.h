@@ -9,4 +9,13 @@
 #define usint unsigned int
 #define byte char
 
+enum errType {
+	CallWayWrong=1,
+	IsntQueFile,
+	CannotOpenFile,
+
+	PtrPosOutOfRandge,
+	UnexceptedToken,
+	SyntaxWrong
+};
 #endif // UNIQUE_UCM_DEF_H_
