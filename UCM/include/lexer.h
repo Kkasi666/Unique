@@ -10,6 +10,8 @@
 #include <vector>
 #include "def.h"
 
+namespace compiler {
+
 enum tokenType {
 	T_NULL=0,
 	T_NUM,
@@ -85,5 +87,7 @@ public:
 	TokenList *getTokenList();
 	void lexing();
 };
+
+} // namespace compiler
 
 #endif // UNIQUE_UCM_LEXER_H_

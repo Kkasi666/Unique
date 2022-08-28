@@ -10,6 +10,8 @@
 #include <fstream>
 #include "def.h"
 
+namespace compiler {
+
 class PrjLoader {
 private:
 	std::string workDir;
@@ -22,5 +24,7 @@ public:
 	std::string getBuffer() const;
 	~PrjLoader();
 };
+
+} // namespace compiler
 
 #endif // UNIQUE_UCM_PROLOADER_H_

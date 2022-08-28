@@ -5,6 +5,8 @@
 
 #include "prjLoader.h"
 
+namespace compiler {
+
 PrjLoader::PrjLoader(std::string workDir, usint maxLen)
 	: workDir(workDir), maxLen(maxLen), len(0) {
 }
@@ -34,3 +36,5 @@ std::string PrjLoader::getBuffer() const {
 }
 
 PrjLoader::~PrjLoader() {}
+
+} // namespace compiler

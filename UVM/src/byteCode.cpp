@@ -5,6 +5,8 @@
 
 #include "byteCode.h"
 
+namespace virtualMachine {
+
 int hasOperand[] {
 	[NOP]   = 0,
 	[PUSH]  = 1,
@@ -31,3 +33,5 @@ opCode ByteCode::getOpCode() const {
 int ByteCode::getOperand() const {
 	return this->operand;
 }
+
+} // namespace virtualMachine

@@ -1,5 +1,6 @@
 # News (重要通知)
-## 目前暂时取消负数!!!
+## Negative Numbers are Temporarily Cancelled!! (目前暂时取消负数！！！)
+## The Following Grammar is NOT Complete!!!(以下语法并没有全部完成！！！)
 
 # grammar
 ```

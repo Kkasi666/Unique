@@ -6,6 +6,8 @@
 #include <fstream>
 #include "byteWriter.h"
 
+namespace compiler {
+
 ByteWriter::ByteWriter() {}
 
 ByteWriter::ByteWriter(std::string workDir, std::string fileName)
@@ -34,3 +36,5 @@ void ByteWriter::writing() {
 	outf.close();
 	delete[] buffer;
 }
+
+} // namespace compiler

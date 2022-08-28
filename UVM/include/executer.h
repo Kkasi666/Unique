@@ -13,6 +13,8 @@
 #include "def.h"
 #include "byteCode.h"
 
+namespace virtualMachine {
+
 class Executer {
 private:
 	std::vector<ByteCode> bCodes;
@@ -31,5 +33,7 @@ public:
 	~Executer();
 	void executing();
 };
+
+} // namespace virtualMachine
 
 #endif // UNIQUE_UCM_EXECUTER_H_

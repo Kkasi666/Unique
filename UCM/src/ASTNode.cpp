@@ -5,6 +5,8 @@
 
 #include "ASTNode.h"
 
+namespace compiler {
+
 /* class FactorNode */
 
 FactorNode::FactorNode()
@@ -46,8 +48,7 @@ void FactorNode::show() {
 
 /* class TermNode */
 
-TermNode::TermNode() {
-}
+TermNode::TermNode() {}
 
 TermNode::~TermNode() {
 	if(!factors.empty()){
@@ -119,8 +120,7 @@ void TermNode::show() {
 
 /* class ExprNode */
 
-ExprNode::ExprNode() {
-}
+ExprNode::ExprNode() {}
 
 ExprNode::~ExprNode() {
 	if(!factors.empty()){
@@ -193,22 +193,27 @@ void   ExprNode::show() {
 /* class AssignNode */
 
 AssignNode::AssignNode()
-	: factor(nullptr) {}
+	: factor(nullptr) {
+}
 
 AssignNode::~AssignNode() {}
 
 void AssignNode::setIdentifier(Terminal *idn) {
 	this->identifier=idn;
 }
+
 void AssignNode::setFactor(ExprNode *exprN) {
 	this->factor=exprN;
 }
+
 Terminal *AssignNode::getIdentifier() const {
 	return this->identifier;
 }
+
 ExprNode *AssignNode::getFactor() const {
 	return this->factor;
 }
+
 void AssignNode::show() {
 	if(identifier) {
 		printf("{ \"Assign\": { \"identifier\": ");
@@ -238,6 +243,7 @@ usint StatExprNode::getFactorSize() const {
 void StatExprNode::addFactor(AssignNode *fac) {
 	factors.push_back(fac);
 }
+
 AssignNode *StatExprNode::getFactor(usint index) const {
 	if(!factors.empty()) {
 		return factors.at(index);
@@ -259,3 +265,5 @@ void StatExprNode::show() {
 		printf("\b\b  \b\b ] } }\n");
 	}
 }
+
+} // namespace compiler

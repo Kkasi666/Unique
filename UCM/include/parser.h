@@ -6,7 +6,6 @@
 #ifndef UNIQUE_UCM_PARSER_H_
 #define UNIQUE_UCM_PARSER_H_
 
-#include "def.h"
 #include "ASTNode.h"
 
 /*
@@ -16,6 +15,8 @@ expr -> term ((MUL|DIV) term)*
 assign -> IDN ASS expr
 statExpr -> assign+
 */
+
+namespace compiler {
 
 class Parser {
 private:
@@ -57,5 +58,7 @@ public:
 	void showAST();
 	StatExprNode *getAST() const;
 };
+
+} // namespace compiler
 
 #endif // UNIQUE_UCM_PARSER_H_

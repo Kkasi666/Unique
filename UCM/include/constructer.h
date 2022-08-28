@@ -9,9 +9,10 @@
 #include <string>
 #include <vector>
 #include <map>
-#include "def.h"
 #include "ASTNode.h"
 #include "byteCode.h"
+
+namespace compiler {
 
 class Constructer {
 private:
@@ -36,5 +37,7 @@ public:
 	std::vector<byte> getCode() const;
 	void showByteCode();
 };
+
+} // namespace compiler
 
 #endif // UNIQUE_UCM_CONSTRUCTER_

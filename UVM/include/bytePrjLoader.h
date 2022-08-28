@@ -12,6 +12,8 @@
 #include "def.h"
 #include "byteCode.h"
 
+namespace virtualMachine {
+
 class BytePrjLoader {
 private:
 	std::string workDir;
@@ -22,5 +24,7 @@ public:
 	void initFile(std::string fileName);
 	std::vector<ByteCode> getCodes() const;
 };
+
+} // namespace virtualMachine
 
 #endif // UNIQUE_UCM_BYTEPRJLOADER_H_

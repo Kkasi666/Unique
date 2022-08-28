@@ -3,23 +3,23 @@
 # Information
 	A programming language is prepared for SourceSpace Studio coding.
 
-# How To Make?
-### 0. By default, I think you are in the `Unique` directory and your computer have `Make`.
-### 1. Make Unique compiler.
-1) `cd UCM` to into Makefile's path. 
-2) Use `make` or `mingw32-make` to make file.
-3) `./build/quec [workDir] (proName)` to run it or set environment variable that use `quec [workDir] (proName)` to run.
-
-### 2. Make Unique VM.
-1) `cd ../UVM` to into Makefile's path. 
-2) Use `make` or `mingw32-make` to make file.
-3) `./build/que [workDir] (proName)` to run it or set environment variable that use `que [workDir] (proName)` to run.
+# How To Install?
+### 0. By default, I think you are in the `Unique` directory and your computer have `Make`(or `mingw32-make`).
+### 1. Make Unique compiler and Unique VM.
+1. Use `make` or `mingw32-make` to make file.
+2. The compiler is in `./UCM/build/` and called `quec`,
+   the VM is in `.UVM/build/` and called `que`.
+3. I advise seting environment variable then use `quec (proName)` to run compiler
+   and use `que (proByteCodeName)` to run VM.
 
 ### 3. Try Compiler a unique code.
-1) There is a unique code file is called `pro1.que`  in `./testbench/test1`.
-2) `cd ./testbench/test1` to into workDir.
-3) `quec pro1` to compile.
-4) `que pro1` to execute unique byte code.
+1. There is a unique code file is called `pro1.que` in `./testbench/test1`.
+2. `quec ./testbench/test1/pro1.1ue` to compile.
+3. `que pro1` to execute unique byte code.
+
+# More Language
+1. [中文简体](./doc/README_CN.md)
+2. Want to have other language please contact us.
 
 # More Info
 1. [updateLog](./doc/updateLog.md)

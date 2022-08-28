@@ -6,7 +6,15 @@
 #ifndef UNIQUE_UCM_DEF_H_
 #define UNIQUE_UCM_DEF_H_
 
+namespace virtualMachine {
+
 #define usint unsigned int
 #define byte char
+
+enum errType {
+	CallWayWrong=1
+};
+
+} // namespace virtualMachine
 
 #endif // UNIQUE_UCM_DEF_H_

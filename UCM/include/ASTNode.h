@@ -10,6 +10,8 @@
 #include "def.h"
 #include "lexer.h"
 
+namespace compiler {
+
 typedef Token Terminal;
 class ExprNode;
 
@@ -93,5 +95,7 @@ public:
 	AssignNode *getFactor(usint index) const;
 	void show();
 };
+
+} // namespace compiler
 
 #endif // UNIQUE_UCM_ASTNODE_H_

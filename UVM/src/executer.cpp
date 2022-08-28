@@ -5,19 +5,25 @@
 
 #include "executer.h"
 
+namespace virtualMachine {
+
 Executer::Executer(std::vector<ByteCode> bCodes)
-	: bCodes(bCodes),ip(0) {}
+	: bCodes(bCodes),ip(0) {
+}
+
 Executer::~Executer() {}
 
 bool Executer::isVstackCode() {
 	ByteCode bCode = bCodes.at(ip);
 	return bCode.getOpCode()==PUSH || bCode.getOpCode()==POP;
 }
+
 bool Executer::isOpCode() {
 	ByteCode bCode = bCodes.at(ip);
 	return bCode.getOpCode()==ADD || bCode.getOpCode()==SUB ||
 	       bCode.getOpCode()==MUL || bCode.getOpCode()==DIV;
 }
+
 bool Executer::isVarPoolCode() {
 	ByteCode bCode = bCodes.at(ip);
 	return bCode.getOpCode()==STORE || bCode.getOpCode()==LOAD;
@@ -51,6 +57,7 @@ void Executer::visitOpCode() {
 		default: break;
 	}
 }
+
 void Executer::visitVarPoolCode() {
 	ByteCode bCode = bCodes.at(ip);
 	switch(bCode.getOpCode()) {
@@ -59,6 +66,7 @@ void Executer::visitVarPoolCode() {
 		default: break;
 	}
 }
+
 void Executer::executing() {
 	ip=0;
 	while(bCodes.size()>ip) {
@@ -77,3 +85,5 @@ void Executer::executing() {
 		printf("[Executer] %d : %d\n",i,variablePool.at(i));
 	}
 }
+
+} // namespace virtualMachine

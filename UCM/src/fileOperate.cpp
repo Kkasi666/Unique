@@ -10,6 +10,8 @@
 #endif
 #include "fileOperate.h"
 
+namespace compiler {
+
 std::string getWorkPath() {
 	char *buffer = new char[512];
 	std::string workPath;
@@ -18,3 +20,5 @@ std::string getWorkPath() {
 	delete[] buffer;
 	return workPath;
 }
+
+} // namespace compiler

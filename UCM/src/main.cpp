@@ -12,6 +12,7 @@
 #include "byteWriter.h"
 
 #define CODEMAXLEN 100
+using namespace compiler;
 
 int main(int argc, char **argv) {
 	/* head */

@@ -5,6 +5,8 @@
 
 #include "constructer.h"
 
+namespace compiler {
+
 Constructer::Constructer()
 : stat(nullptr), idCur(0) {}
 
@@ -25,6 +27,7 @@ void Constructer::visitTermOp(Terminal *terl) {
 		default: makeByteCode(NOP,0x0000); break;
 	}
 }
+
 void Constructer::visitExprOp(Terminal *terl) {
 	switch (terl->getType()) {
 		case T_ADD: makeByteCode(ADD, 0x0000); break;
@@ -42,15 +45,15 @@ void Constructer::visitFactorNode(FactorNode *fac) {
 			usint vId = variableTable[fac->getOperand()->getData()];
 			makeByteCode(LOAD, vId);
 		}
-		
 	} else if(fac->getFactor()) {
 		visitExprNode(fac->getFactor());
 	} else {
 		return; // error
 	}
 }
+
 void Constructer::visitTermNode(TermNode *ter) {
-		if(!ter->factorEmpty()) {
+	if(!ter->factorEmpty()) {
 		if(ter->onlyFactor()) {
 			visitFactorNode(ter->getFactor(0));
 		} else if(!ter->operatorEmpty()) {
@@ -68,6 +71,7 @@ void Constructer::visitTermNode(TermNode *ter) {
 		return; // error
 	}
 }
+
 void Constructer::visitExprNode(ExprNode *expr) {
 	if(!expr->factorEmpty()) {
 		if(expr->onlyFactor()) {
@@ -99,8 +103,8 @@ void Constructer::visitAssignNode(AssignNode *ass) {
 			makeByteCode(STORE, variableTable[id]);
 		}
 	}
-	
 }
+
 void Constructer::visitStatExprNode(StatExprNode *stat) {
 	if(stat) {
 		for(int i=0;i<stat->getFactorSize();i++) {
@@ -123,3 +127,5 @@ void Constructer::showByteCode() {
 		printf("%d %d\n",byteCode.at(i),byteCode.at(i+1));
 	}
 }
+
+} // namespace compiler

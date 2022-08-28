@@ -3,9 +3,10 @@
 // Author: Kkasi
 // This is turning tokens to AST.
 
-#include <iostream>
 #include <string>
 #include "parser.h"
+
+namespace compiler {
 
 Parser::Parser()
 	: tkl(nullptr), pos(0), stat(nullptr) {
@@ -39,6 +40,7 @@ bool Parser::isTermOp() {
 	if(pos>=tkl->getSize()) return false;
 	return (tkl->getToken(pos)->getType()==T_MUL || tkl->getToken(pos)->getType()==T_DIV);
 }
+
 bool Parser::isExprOp() {
 	if(pos>=tkl->getSize()) return false;
 	return (tkl->getToken(pos)->getType()==T_ADD || tkl->getToken(pos)->getType()==T_SUB);
@@ -66,6 +68,7 @@ bool Parser::isFactorStart() {
 bool Parser::isTermStart() {
 	return isFactorStart();
 }
+
 bool Parser::isExprStart() {
 	return isTermStart();
 }
@@ -103,6 +106,7 @@ Terminal *Parser::termOp() {
 	}
 	return tkl->getToken(pos);
 }
+
 Terminal *Parser::exprOp() {
 	if(!isExprOp()) {
 		return 0x0;
@@ -231,3 +235,5 @@ void Parser::showAST() {
 StatExprNode *Parser::getAST() const {
 	return this->stat;
 }
+
+} // namespace compiler

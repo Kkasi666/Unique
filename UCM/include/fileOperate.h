@@ -8,6 +8,10 @@
 
 #include <string>
 
+namespace compiler {
+
 std::string getWorkPath();
+
+} // namespace compiler
 
 #endif // UNIQUE_UCM_FILEAPI_H_

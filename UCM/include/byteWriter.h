@@ -10,6 +10,8 @@
 #include <vector>
 #include "def.h"
 
+namespace compiler {
+
 class ByteWriter
 {
 private:
@@ -25,5 +27,7 @@ public:
 	void setCode(std::vector<byte> code);
 	void writing();
 };
+
+} // namespace compiler
 
 #endif // UNIQUE_UCM_BYTEWRITER_H_

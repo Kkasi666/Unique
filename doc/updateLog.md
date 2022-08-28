@@ -24,6 +24,10 @@ eddd
 1. v0.1.0 Unique Virtual Machine was finish!
 2. fix some bug.
 
+## [update] v0.1.2 2022.8.28 14:55
+1. fix some bug.
+2. better error message.
+
 # Coming Soon
-1. More grammar.
+1. Complete grammar.
 2. More...

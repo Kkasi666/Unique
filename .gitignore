@@ -1,5 +1,5 @@
 # make
-UCM/build/
+./*/build/
 
 # MacOS
 .DS_Store/

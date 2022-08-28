@@ -8,6 +8,10 @@
 
 #include <string>
 
+namespace virtualMachine {
+
 std::string getWorkPath();
+
+} // namespace virtualMachine
 
 #endif // UNIQUE_UCM_FILEAPI_H_

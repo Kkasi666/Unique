@@ -6,6 +6,8 @@
 #ifndef UNIQUE_UCM_BYTECODE_
 #define UNIQUE_UCM_BYTECODE_
 
+namespace compiler {
+
 enum opCode {
 	NOP   = 0x0000,
 	PUSH  = 0x0001,
@@ -17,5 +19,7 @@ enum opCode {
 	LOAD  = 0x0007, // load [ip]
 	STORE = 0x0008 // store [ip]
 };
+
+} // namespace compiler
 
 #endif // UNIQUE_UCM_BYTECODE_

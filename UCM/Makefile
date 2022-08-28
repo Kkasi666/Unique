@@ -3,7 +3,7 @@ MKDIR := mkdir
 DELFILES := del # if use 'del' couldn't pass, you can try using 'rm'.
 
 CPP_INCLUDE := -I"./include/"
-CPP_SOURCE  := fileOperate prjLoader lexer ASTNode parser byteCode constructer byteWriter main
+CPP_SOURCE  := fileOperate prjLoader lexer ASTNode parser constructer byteWriter main
 
 BUILDDIR := ./build
 SRCDIR   := ./src

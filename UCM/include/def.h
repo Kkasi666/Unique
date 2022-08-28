@@ -6,6 +6,8 @@
 #ifndef UNIQUE_UCM_DEF_H_
 #define UNIQUE_UCM_DEF_H_
 
+namespace compiler {
+
 #define usint unsigned int
 #define byte char
 
@@ -18,4 +20,7 @@ enum errType {
 	UnexceptedToken,
 	SyntaxWrong
 };
+
+} // namespace compiler
+
 #endif // UNIQUE_UCM_DEF_H_

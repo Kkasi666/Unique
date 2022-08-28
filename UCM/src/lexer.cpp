@@ -3,9 +3,9 @@
 // Author: Kkasi
 // This is turning source code into tokens.
 
-#include <iostream>
-#include <vector>
 #include "lexer.h"
+
+namespace compiler {
 
 enum tokenType getBraType(const char chr) {
 	switch (chr) {
@@ -32,8 +32,8 @@ enum tokenType getOpType(const char chr) {
 /* class Token */
 
 Token::Token()
-	: type(T_NULL), data("\0"), line(0), row(0), value(0) {
-}
+	: type(T_NULL), data("\0"), line(0), row(0), value(0) {}
+
 Token::Token(enum tokenType type,const std::string data,int line,int row)
 	: type(type), data(data), line(line), row(row),value(0) {
 	if(this->type==T_NUM) {
@@ -110,8 +110,7 @@ Lexer::Lexer()
 	: code("\0"), tkl(nullptr), pos(0), line(1), row(1) {
 }
 
-Lexer::~Lexer() {
-}
+Lexer::~Lexer() {}
 
 void Lexer::next() {
 	if(pos>=code.size()) {
@@ -141,6 +140,7 @@ void Lexer::Word() {
 	tkl->addToken(Token(T_WORD,readData,line,row));
 	nextRow(readData.size());
 }
+
 void Lexer::Number() {
 	while(isdigit(code[pos]) && pos<code.size()) {
 		readData.push_back(code[pos]);
@@ -149,18 +149,21 @@ void Lexer::Number() {
 	tkl->addToken(Token(T_NUM,readData,line,row));
 	nextRow(readData.size());
 }
+
 void Lexer::Oparetor() {
 	enum tokenType opT = getOpType(code[pos]);
 	readData.push_back(code[pos]);
 	tkl->addToken(Token(opT,readData,line,row));
 	next();
 }
+
 void Lexer::AssignSymbol() {
 	readData.push_back(code[pos]);
 	tkl->addToken(Token(T_ASS,readData,line,row));
 	next();
 	nextRow();
 }
+
 void Lexer::Braket() {
 	enum tokenType opT = getBraType(code[pos]);
 	readData.push_back(code[pos]);
@@ -176,9 +179,11 @@ std::string Lexer::getCode() const {
 void Lexer::setCode(std::string code) {
 	this->code=code;
 }
+
 TokenList *Lexer::getTokenList() {
 	return this->tkl;
 }
+
 void Lexer::lexing() {
 	tkl = new TokenList;
 	while(pos<code.size()) {
@@ -209,3 +214,5 @@ void Lexer::lexing() {
 		readData.clear();
 	}
 }
+
+} // namespace compiler

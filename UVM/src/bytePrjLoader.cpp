@@ -5,6 +5,8 @@
 
 #include "bytePrjLoader.h"
 
+namespace virtualMachine {
+
 BytePrjLoader::BytePrjLoader(std::string workDir)
 	: workDir(workDir) {
 }
@@ -42,3 +44,5 @@ void BytePrjLoader::initFile(std::string fileName) {
 std::vector<ByteCode> BytePrjLoader::getCodes() const {
 	return this->bCodes;
 }
+
+} // namespace virtualMachine

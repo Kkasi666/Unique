@@ -6,6 +6,8 @@
 #ifndef UNIQUE_UCM_BYTECODE_
 #define UNIQUE_UCM_BYTECODE_
 
+namespace virtualMachine {
+
 enum opCode {
 	NOP   = 0x0000,
 	PUSH  = 0x0001,
@@ -30,5 +32,7 @@ public:
 	opCode getOpCode() const;
 	int getOperand() const;
 };
+
+} // namespace virtualMachine
 
 #endif // UNIQUE_UCM_BYTECODE_
