@@ -19,7 +19,7 @@
 
 # More Language
 1. [中文简体](./doc/README_CN.md)
-2. Want to have other language please contact us.
+2. Please contact us if you want to supporting more language.
 
 # More Info
 1. [updateLog](./doc/updateLog.md)
