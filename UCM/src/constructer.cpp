@@ -36,17 +36,27 @@ void Constructer::visitExprOp(Terminal *terl) {
 	}
 }
 
+void Constructer::visitNegativeNode(NegativeNode *negt) {
+	int value = negt->getNumber()->getInfo();
+	// if(value <= 0xFFFF) {
+		makeByteCode(PUSH,-(/*(short)*/value));
+	// }
+	
+}
+
 void Constructer::visitFactorNode(FactorNode *fac) {
 	if(fac->getOperand()) {
 		if(fac->getOperand()->getType()==T_NUM) {
-			int value = fac->getOperand()->getValue();
+			int value = fac->getOperand()->getInfo();
 			makeByteCode(PUSH, value);
-		} else if (fac->getOperand()->getType()==T_WORD) {
+		} else if (fac->getOperand()->getType()==T_IDN) {
 			usint vId = variableTable[fac->getOperand()->getData()];
 			makeByteCode(LOAD, vId);
 		}
-	} else if(fac->getFactor()) {
-		visitExprNode(fac->getFactor());
+	} else if(fac->negtValid()) {
+		visitNegativeNode(fac->getNegtFactor());
+	} else if(fac->exprValid()) {
+		visitExprNode(fac->getExprFactor());
 	} else {
 		return; // error
 	}
@@ -117,14 +127,14 @@ void Constructer::constructing() {
 	visitStatExprNode(stat);
 }
 
-std::vector<byte> Constructer::getCode() const {
+std::vector<byte/*short*/> Constructer::getCode() const {
 	return this->byteCode;
 }
 
 void Constructer::showByteCode() {
 	printf("\n");
 	for(int i=0; i<byteCode.size(); i+=2) {
-		printf("%d %d\n",byteCode.at(i),byteCode.at(i+1));
+		printf("%d | %d\n",byteCode.at(i),byteCode.at(i+1));
 	}
 }
 

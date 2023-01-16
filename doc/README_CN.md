@@ -5,7 +5,7 @@
 
 ## 如何安装？
 
-### 1.我默认您位于“Unique”目录中，并且您的计算机有“Make”(或者mingw32-make)。
+### 1.默认您位于“Unique”目录中，并且您的计算机有“Make”(或者mingw32-make)。
 
 ### 2.安装Unique编译器和Unique虚拟机。
 1. 使用`make`或`mingw32 make`安装。

@@ -24,6 +24,7 @@ protected:
 	void makeByteCode(opCode op, int operand);
 	void visitTermOp(Terminal *terl);
 	void visitExprOp(Terminal *terl);
+	void visitNegativeNode(NegativeNode *negt);
 	void visitFactorNode(FactorNode *fac);
 	void visitTermNode(TermNode *ter);
 	void visitExprNode(ExprNode *expr);

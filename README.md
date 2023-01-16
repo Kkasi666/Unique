@@ -4,7 +4,7 @@
 	A programming language is prepared for SourceSpace Studio coding.
 
 ## How To Install?
-### 0. By default, I think you are in the `Unique` directory and your computer have `Make`(or `mingw32-make`).
+### 0. By default, you are in the `Unique` directory and your computer have `Make`(or `mingw32-make`).
 ### 1. Make Unique compiler and Unique VM.
 1. Use `make` or `mingw32-make` to make file.
 2. The compiler is in `./UCM/build/` and called `quec`,

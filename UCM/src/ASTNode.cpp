@@ -9,39 +9,70 @@ namespace compiler {
 
 /* class NegativeNode */
 
-NegativeNode::NegativeNode(/* args */)
-{
+NegativeNode::NegativeNode()
+	: number(nullptr) {
 }
 
-NegativeNode::~NegativeNode()
-{
+NegativeNode::~NegativeNode() {
+	if(number) delete number;
+}
+
+void NegativeNode::setNumber(Terminal *num) {
+	this->number = num;
+}
+
+Terminal *NegativeNode::getNumber() const {
+	return this->number;
+}
+
+void NegativeNode::show() {
+	if(this->number) {
+		printf("{ \"Negative\": { \"number\": ");
+		number->show();
+		printf(" } }");
+	}
 }
 
 /* class FactorNode */
 
 FactorNode::FactorNode()
-	: operand(nullptr), factor(nullptr) {
+	: operand(nullptr),expr(nullptr),negt(nullptr) {
 }
 
 FactorNode::~FactorNode() {
 	if(operand) delete operand;
-	if(factor) delete factor;
+	if(expr) delete expr;
+	if(negt) delete negt;
+}
+
+bool FactorNode::exprValid() {
+	return expr;
+}
+bool FactorNode::negtValid() {
+	return negt;
 }
 
 void FactorNode::setOperand(Terminal *ope) {
 	this->operand=ope;
 }
 
-void FactorNode::setFactor(ExprNode *fac) {
-	this->factor=fac;
+void FactorNode::setExprFactor(ExprNode *fac) {
+	this->expr=fac;
+}
+
+void FactorNode::setNegtFactor(NegativeNode *fac) {
+	this->negt=fac;
 }
 
 Terminal *FactorNode::getOperand() const {
 	return this->operand;
 }
 
-ExprNode *FactorNode::getFactor() const {
-	return this->factor;
+ExprNode *FactorNode::getExprFactor() const {
+	return this->expr;
+}
+NegativeNode *FactorNode::getNegtFactor() const {
+	return this->negt;
 }
 
 void FactorNode::show() {
@@ -49,9 +80,13 @@ void FactorNode::show() {
 		printf("{ \"Factor\": { \"operand\": ");
 		operand->show(); // token
 		printf(" } }");
-	} else if(factor) {
+	} else {
 		printf("{ \"Factor\": { ");
-		factor->show();
+		if(expr) {
+			expr->show();
+		}else if(negt) {
+			negt->show();
+		}
 		printf(" } }");
 	}
 }

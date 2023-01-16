@@ -15,7 +15,7 @@ namespace compiler {
 enum tokenType {
 	T_NULL=0,
 	T_NUM,
-	T_WORD,
+	T_IDN,
 	T_KEYWORD,
 	T_ASS,
 	T_ADD,
@@ -45,16 +45,17 @@ private:
 	enum tokenType type;
 	std::string data;
 	usint line,row;
-	int value;
+	int info;
 public:
 	Token();
-	Token(enum tokenType type,const std::string data,int line,int row);
+	Token(enum tokenType type,const std::string data,int info=0);
 	~Token();
+	void setPosition(usint line,usint row);
 	enum tokenType getType() const;
 	std::string getData() const;
 	int getLine() const;
 	int getRow() const;
-	int getValue() const;
+	int getInfo() const;
 	void show();
 };
 
@@ -80,6 +81,7 @@ private:
 	usint pos, line, row;
 protected:
 	void next();
+	void addToken(Token t);
 	void nextRow(int step=1);
 	void nextLine();
 	void Word();

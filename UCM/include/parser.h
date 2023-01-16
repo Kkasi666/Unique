@@ -9,7 +9,8 @@
 #include "ASTNode.h"
 
 /*
-factor -> PTHL expr PTHR | NUM | IDN
+negative -> SUB NUM
+factor -> PTHL expr PTHR | NUM | IDN | negative
 term -> factor ((ADD|SUB) factor)*
 expr -> term ((MUL|DIV) term)*
 assign -> IDN ASS expr
@@ -34,6 +35,7 @@ protected:
 	bool isRightPth();
 	bool isAssignment();
 
+	bool isNegativeStart();
 	bool isFactorStart();
 	bool isTermStart();
 	bool isExprStart();
@@ -45,6 +47,8 @@ protected:
 	Terminal *identifier();
 	Terminal *termOp();
 	Terminal *exprOp();
+
+	NegativeNode *negative();
 	FactorNode *factor();
 	TermNode *term();
 	ExprNode *expr();
