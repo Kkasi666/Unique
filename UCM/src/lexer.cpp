@@ -13,8 +13,8 @@ enum tokenType getBraType(const char chr) {
 		case ')': return T_PTHR; break;
 		case '[': return T_BRKL; break;
 		case ']': return T_BRKR; break;
-		case '{': return T_MUL; break;
-		case '}': return T_DIV; break;
+		case '{': return T_BRCL; break;
+		case '}': return T_BRCR; break;
 		default:  return T_NULL; break;
 	}
 }
@@ -32,21 +32,26 @@ enum tokenType getOpType(const char chr) {
 /* class Token */
 
 Token::Token()
-	: type(T_NULL), data("\0"), line(0), row(0), value(0) {}
+	: type(T_NULL), data("\0"), line(0), row(0), info(0) {}
 
-Token::Token(enum tokenType type,const std::string data,int line,int row)
-	: type(type), data(data), line(line), row(row),value(0) {
+Token::Token(enum tokenType type,const std::string data, int info)
+	: type(type), data(data), line(0), row(0), info(info) {
 	if(this->type==T_NUM) {
 		int index=1, res=0;
 		for(int i=data.size()-1;i>=0;i--) {
 			res+=(data[i]-'0')*index;
 			index*=10;
 		}
-		this->value = res;
+		this->info = res;
 	}
 }
 
 Token::~Token() {}
+
+void Token::setPosition(usint line,usint row) {
+	this->line=line;
+	this->row=row;
+}
 
 enum tokenType Token::getType() const {
 	return this->type;
@@ -64,12 +69,12 @@ int Token::getRow() const {
 	return this->row;
 }
 
-int Token::getValue() const {
-	return this->value;
+int Token::getInfo() const {
+	return this->info;
 }
 
 void Token::show() {
-	printf("{ %d:%d \"type\": %d , \"data\" : \"%s\" }", line,row,type, data.c_str());
+	printf("{ \"linerow\": \"%d:%d\" , \"type\": %d , \"data\" : \"%s\" }", line,row,type, data.c_str());
 }
 
 /* class TokenList */
@@ -122,14 +127,11 @@ void Lexer::next() {
 	this->pos++;
 }
 
-void Lexer::nextRow(int step) {
-	this->row+=step;
-}
-
-
-void Lexer::nextLine() {
-	this->line++;
-	this->row=1;
+void Lexer::addToken(Token t) {
+	t.setPosition(line,row);
+	tkl->addToken(t);
+	usint tokenStrLen = t.getData().size();
+	row+=tokenStrLen;
 }
 
 void Lexer::Word() {
@@ -137,8 +139,12 @@ void Lexer::Word() {
 		readData.push_back(code[pos]);
 		next();
 	}
-	tkl->addToken(Token(T_WORD,readData,line,row));
-	nextRow(readData.size());
+	for (int index = 0; index < 4; index++) {
+		if(readData==keywordTable[index]) {
+			addToken(Token(T_KEYWORD,readData,index));
+		}
+	}
+	addToken(Token(T_IDN,readData));
 }
 
 void Lexer::Number() {
@@ -146,30 +152,39 @@ void Lexer::Number() {
 		readData.push_back(code[pos]);
 		next();
 	}
-	tkl->addToken(Token(T_NUM,readData,line,row));
-	nextRow(readData.size());
+	addToken(Token(T_NUM,readData));
 }
 
 void Lexer::Oparetor() {
 	enum tokenType opT = getOpType(code[pos]);
 	readData.push_back(code[pos]);
-	tkl->addToken(Token(opT,readData,line,row));
+	addToken(Token(opT,readData));
 	next();
 }
 
 void Lexer::AssignSymbol() {
 	readData.push_back(code[pos]);
-	tkl->addToken(Token(T_ASS,readData,line,row));
+	addToken(Token(T_ASS,readData));
 	next();
-	nextRow();
 }
 
 void Lexer::Braket() {
 	enum tokenType opT = getBraType(code[pos]);
 	readData.push_back(code[pos]);
-	tkl->addToken(Token(opT,readData,line,row));
+	addToken(Token(opT,readData));
 	next();
-	nextRow();
+}
+
+void Lexer::SingeQuotationMark() {
+	readData.push_back(code[pos]);
+	addToken(Token(T_SQM,readData));
+	next();
+}
+
+void Lexer::DoubleQuotationMark() {
+	readData.push_back(code[pos]);
+	addToken(Token(T_DQM,readData));
+	next();
 }
 
 std::string Lexer::getCode() const {
@@ -188,24 +203,26 @@ void Lexer::lexing() {
 	tkl = new TokenList;
 	while(pos<code.size()) {
 		if(code[pos]=='\n') { // is enter.
-			next();
-			nextLine();
+			next(); this->line++; this->row=1;
 		} else if(code[pos]==' ' || code[pos]=='\t') { // is space or tab.
-			next();
-			nextRow();
+			next(); this->row++;
 		} else if (code[pos]=='/' && code[pos]==code[pos+1]) { // is comment.
 			for(;pos<code.size() && code[pos]!='\n';next());
 			// go to "is enter" and nextLine.
-		} else if(isalpha(code[pos])) { // is word.
+		} else if (isalpha(code[pos])) { // is word.
 			Word();
-		} else if(code[pos]=='=') { // is assign symbol.
+		} else if (code[pos]=='=') { // is assign symbol.
 			AssignSymbol();
-		} else if(isdigit(code[pos])) { // is number.
+		} else if (isdigit(code[pos])) { // is number.
 			Number();
-		} else if(getOpType(code[pos])) { // is oparetor.
+		} else if (getOpType(code[pos])) { // is oparetor.
 			Oparetor();
-		} else if(getBraType(code[pos])) { // is braket.
+		} else if (getBraType(code[pos])) { // is braket.
 			Braket();
+		} else if (code[pos]=='\'') { // is singe quotation mark
+			SingeQuotationMark();
+		} else if (code[pos]=='\'') { // is double quotation mark
+			DoubleQuotationMark();
 		} else { // is unexecpted token.
 			printf("unique.compiler.lexer.UnexceptedToken Error:\n"\
 			 "\tIn line: %d row: %d, unexcepted token '%c'.\n",line,row,code[pos]);

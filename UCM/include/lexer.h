@@ -16,6 +16,7 @@ enum tokenType {
 	T_NULL=0,
 	T_NUM,
 	T_WORD,
+	T_KEYWORD,
 	T_ASS,
 	T_ADD,
 	T_SUB,
@@ -26,7 +27,14 @@ enum tokenType {
 	T_BRKL, // bracket left
 	T_BRKR,
 	T_BRCL, // Braces left
-	T_BRCR
+	T_BRCR,
+	T_SQM,
+	T_DQM
+};
+
+static std::string keywordTable[] = {
+	"print",
+	"fun", "main", "ret"
 };
 
 enum tokenType getBraType(const char chr);
@@ -79,6 +87,8 @@ protected:
 	void Oparetor();
 	void AssignSymbol();
 	void Braket();
+	void SingeQuotationMark();
+	void DoubleQuotationMark();
 public:
 	Lexer();
 	~Lexer();

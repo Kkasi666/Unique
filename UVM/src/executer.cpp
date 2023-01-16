@@ -39,6 +39,10 @@ void Executer::visitVstackCode() {
 }
 
 void Executer::visitOpCode() {
+	if(vstack.size()<2) {
+		printf("vmStackError: index is out of stack size.");
+		exit(-1);
+	}
 	ByteCode bCode = bCodes.at(ip);
 	int op1,op2;
 	switch(bCode.getOpCode()) {

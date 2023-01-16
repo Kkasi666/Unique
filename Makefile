@@ -5,4 +5,10 @@ CD := cd
 build:
 	$(CD) UCM && $(MAKE) build
 	$(CD) UVM && $(MAKE) build
-	@echo " main done!"
+	@echo " build done!"
+
+.PHONY: clean
+clean:
+	$(CD) UCM && $(MAKE) clean
+	$(CD) UVM && $(MAKE) clean
+	@echo " clean done!"

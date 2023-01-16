@@ -1,0 +1,7 @@
+fun main() {
+	a = 'a'
+	b = "aaaaaa"
+	c = 123
+	d = 1.23
+	ret 0
+}

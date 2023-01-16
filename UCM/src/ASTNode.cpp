@@ -7,6 +7,16 @@
 
 namespace compiler {
 
+/* class NegativeNode */
+
+NegativeNode::NegativeNode(/* args */)
+{
+}
+
+NegativeNode::~NegativeNode()
+{
+}
+
 /* class FactorNode */
 
 FactorNode::FactorNode()

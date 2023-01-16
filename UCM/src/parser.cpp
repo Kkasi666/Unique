@@ -6,6 +6,7 @@
 #include <string>
 #include "parser.h"
 
+
 namespace compiler {
 
 Parser::Parser()
@@ -33,7 +34,7 @@ bool Parser::isNumTerminal() {
 
 bool Parser::isIdnTerminal() {
 	if(pos>=tkl->getSize()) return false;
-	return tkl->getToken(pos)->getType()==T_WORD;
+	return tkl->getToken(pos)->getType()==T_IDN;
 }
 
 bool Parser::isTermOp() {
@@ -61,8 +62,12 @@ bool Parser::isAssignment() {
 	return tkl->getToken(pos)->getType()==T_ASS;
 }
 
+bool Parser::isNegativeStart() {
+	return tkl->getToken(pos)->getType()==T_SUB && tkl->getToken(pos+1)->getType()==T_NUM;
+}
+
 bool Parser::isFactorStart() {
-	return (isLeftPth() || isNumTerminal() || isIdnTerminal());
+	return (isLeftPth() || isNumTerminal() || isIdnTerminal() || isNegativeStart());
 }
 
 bool Parser::isTermStart() {
@@ -114,7 +119,15 @@ Terminal *Parser::exprOp() {
 	return tkl->getToken(pos);
 }
 
-// factor -> PTHL expr PTHR | NUM | IDN
+NegativeNode *Parser::negative() {
+	if(!isNegativeStart()) {return 0x0;}
+	next();
+	NegativeNode *negt = new NegativeNode;
+	negt->setNumber(number());
+	return negt;
+}
+
+// factor -> PTHL expr PTHR | NUM | IDN | negative
 FactorNode *Parser::factor() {
 	if(!isFactorStart()) {
 		return 0x0; // [ParserError]factor error.
@@ -126,13 +139,15 @@ FactorNode *Parser::factor() {
 		} else if(isIdnTerminal()) {
 			fac->setOperand(identifier());
 			next();
+		} if(isNegativeStart()) {
+			fac->setNegtFactor(negative());
 		} else if(isLeftPth()) {
 			next();// skip "("
 			if(isExprStart()) {
-				fac->setFactor(expr());
+				fac->setExprFactor(expr());
 			} else {
 				delete fac;
-				throwSyntaxWrong("'(' | number | word");
+				throwSyntaxWrong("'(' | number | word | neg-number");
 				return 0x0;
 			}
 			if(isRightPth()) {
@@ -150,7 +165,7 @@ FactorNode *Parser::factor() {
 // term -> factor ((MUL|DIV) factor)*
 TermNode *Parser::term() {
 	if(!isTermStart()) {
-		throwSyntaxWrong("'(' | number | word");
+		throwSyntaxWrong("'(' | number | word | neg-number");
 		return 0x0;
 	} else {
 		TermNode *ter = new TermNode;
@@ -167,7 +182,7 @@ TermNode *Parser::term() {
 // expr -> term ((ADD|SUB) term)*
 ExprNode *Parser::expr() {
 	if(!isExprStart()) {
-		throwSyntaxWrong("'(' | number | word");
+		throwSyntaxWrong("'(' | number | word | neg-number");
 		return 0x0;
 	} else {
 		ExprNode *expr = new ExprNode;

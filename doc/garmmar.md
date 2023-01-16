@@ -1,32 +1,35 @@
-# News (重要通知)
-## Negative Numbers are Temporarily Cancelled!! (目前暂时取消负数！！！)
-## The Following Grammar is NOT Complete!!!(以下语法并没有全部完成！！！)
-
-# grammar
+# Token
 ```
-PTHL -> '('
-PTHR -> ')'
 ADD -> '+'
 SUB -> '-'
 MUL -> '*'
 DIV -> '/'
 ASS -> '='
-CHAR -> '\'' [ascii] '\''
-STRING -> '\"' [ascii]+ '\"'
+SQM -> '\''
+DQM -> '\"'
 NUM -> [0-9]+
-WORD -> ([a-z] | [A-Z])*
-CMT -> ("//")(!('\n') -> skip
+IDN -> ([a-z] | [A-Z])*
+CMT -> ("//")(!('\n')) -> skip
 SPA -> ' ' | '\t' | '\n'  -> skip
+PTHL -> '('
+PTHR -> ')'
 BRKL -> '['
 BRKR -> ']'
 BRCL -> '{'
 BRCR -> '}'
-KEYWORD -> "var" | "byte" | "bool" | "char" | "int" | "float" | "fun" | "main" |"print" | "ret"
-
-factor -> (PTHL expr PTHR) | NUM | IDN
-term -> factor ((ADD|SUB) factor)*
-expr -> term ((MUL|DIV) term)*
-assign -> KEYWORD<0> IDN (ASS expr) KEYWORD<1-5>
-print -> KEYWORD<8> PTHL (IDN | STRING) PTHR
-program -> KEYWORD<6> KEYWORD<7> PTHL PTHR KEYWORD<5> BRCL (assign | print)+ KEYWORD<9> NUM BRCR
+KEYWORD ->  "print" |
+			"fun" | "main" | "ret"
 ```
+# grammar
+
+char -> SQM ALL(only a char) SQM  
+string -> DQM ALL DQM  
+__negative -> SUB NUM__  
+__factor -> (PTHL expr PTHR) | NUM | IDN | negative__  
+__term -> factor ((ADD|SUB) factor)*__  
+__expr -> term ((MUL|DIV) term)*__  
+__assign -> IDN ASS expr__  
+print -> KEYWORD<0> PTHL (IDN | string | char) PTHR  
+program -> KEYWORD<1> KEYWORD<2> PTHL PTHR BRCL (assign | print)+ KEYWORD<3> NUM BRCR  
+
+__tip:__ The __BOLD__ grammar is completed.

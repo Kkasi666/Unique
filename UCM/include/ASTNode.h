@@ -15,18 +15,38 @@ namespace compiler {
 typedef Token Terminal;
 class ExprNode;
 
-// factor -> PTHL expr PTHR | NUM | IDN (NUM + IDN = operand)
+// negative -> SUB NUM
+class NegativeNode {
+private:
+	// Terminal *negSymbol; // It is useless.
+	Terminal *number;
+public:
+	NegativeNode();
+	~NegativeNode();
+	void setNumber(Terminal *num);
+	Terminal *getNumber() const;
+	void show();
+};
+
+
+// factor -> PTHL expr PTHR | NUM | IDN | negative
+// "operand" include "NUM" and "IDN".
 class FactorNode {
 private:
 	Terminal *operand;
-	ExprNode *factor;
+	ExprNode *expr;
+	NegativeNode *negt;
 public:
 	FactorNode();
 	~FactorNode();
+	bool exprValid();
+	bool negtValid();
 	void setOperand(Terminal *ope);
-	void setFactor(ExprNode *fac);
+	void setExprFactor(ExprNode *fac);
+	void setNegtFactor(NegativeNode *fac);
 	Terminal *getOperand() const;
-	ExprNode *getFactor() const;
+	ExprNode *getExprFactor() const;
+	NegativeNode *getNegtFactor() const;
 	void show();
 };
 
