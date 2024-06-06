@@ -7,3 +7,15 @@ pro1:
 
 pro2:
 [Executer] 0 : -1
+
+cd BackupCode/Unique
+./UCM/build/quec ./testbench/test1/pro2.que
+./UVM/build/que ./testbench/test1/pro2
+Unique VM 0.1.2
+[ByteProjectLoader] Loading complete!
+[Executer] 0 : 2
+[Executer] 1 : 1
+[Executer] 2 : 2
+[Executer] 3 : 1
+[Executer] 4 : 3
+[Executer] Executing complete!

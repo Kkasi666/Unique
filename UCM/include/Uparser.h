@@ -10,11 +10,12 @@
 
 /*
 negative -> SUB NUM
-factor -> PTHL expr PTHR | NUM | IDN | negative
+factor -> PTHL expr PTHR | NUM | WORDidn | negative
 term -> factor ((ADD|SUB) factor)*
 expr -> term ((MUL|DIV) term)*
-assign -> IDN ASS expr
-statExpr -> assign+
+assign -> WORDidn ASS expr
+print -> KEYWORDprint PTHL STR PTHR
+statExpr -> (assign | print)*
 */
 
 namespace compiler {

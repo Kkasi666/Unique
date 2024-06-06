@@ -15,7 +15,8 @@ namespace compiler {
 enum tokenType {
 	T_NULL=0,
 	T_NUM,
-	T_IDN,
+	T_STR,
+	T_WORD,
 	T_KEYWORD,
 	T_ASS,
 	T_ADD,
@@ -61,13 +62,13 @@ public:
 
 class TokenList {
 private:
-	std::vector<Token*> tlist;
+	std::vector<Token> tlist;
 public:
 	TokenList();
 	~TokenList();
 
 	void addToken(Token t);
-	Token *getToken(usint pos) const;
+	Token getToken(usint pos) const;
 	usint getSize() const;
 	enum tokenType getTokenType(usint index) const;
 	std::string getTokenData(usint index) const;
@@ -77,9 +78,15 @@ class Lexer {
 private:
 	std::string code;
 	std::string readData;
-	TokenList *tkl;
+	TokenList tkl;
 	usint pos, line, row;
+	enum State {
+		S_NULL,
+		S_CHAR,
+		S_STR
+	} state;
 protected:
+	bool isOutOfCodeRange();
 	void next();
 	void addToken(Token t);
 	void nextRow(int step=1);
@@ -90,7 +97,7 @@ protected:
 	void AssignSymbol();
 	void Braket();
 	void SingeQuotationMark();
-	void DoubleQuotationMark();
+	void String();
 public:
 	Lexer();
 	~Lexer();

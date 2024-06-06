@@ -10,3 +10,4 @@ d = c/a
 // add a parenthese
 e=(a+b)*(c-d)
 // q // error
+f=7-a

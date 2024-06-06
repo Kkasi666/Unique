@@ -7,7 +7,7 @@
 #include "fileOperate.h"
 #include "prjLoader.h"
 #include "lexer.h"
-#include "parser.h"
+#include "Uparser.h"
 #include "constructer.h"
 #include "byteWriter.h"
 
@@ -47,31 +47,33 @@ int main(int argc, char **argv) {
 	lexer.setCode(scode);
 	lexer.lexing();
 	TokenList *tls = lexer.getTokenList();
-	// printf("[Lexer] Lexing complete!\n");
-	// for(int i=0;i<tls->getSize();i++) {
-	// 	tls->getToken(i)->show();
-	// 	printf("\n");
+	// char16_t helloWorld[6] = {0xe4U,char(0xb8),char16_t(0xad),char16_t(0xe6),char16_t(0xb5),char16_t(0x81)};
+	// for (int i = 0; i < 6; i++)
+	// {
+	// 	printf("%x",helloWorld[i]);
 	// }
 
-	/* Parsing */
+	
+	/* Parsing */ 
 	Parser parser;
 	parser.setTokenList(tls);
 	parser.parsing();
-	// printf("[Praser] Prasing complete!\n");
-	// parser.showAST();
+	printf("[Praser] Prasing complete!\n");
+	parser.showAST();
 
-	/* Constructing */
+	// Constructing 
 	Constructer constructer(parser.getAST());
 	constructer.constructing();
 	// printf("[Constructer] Constructing complete!\n");
 	// constructer.showByteCode();
 
-	/* Writing byte code into file */
+	// Writing byte code into file 
 	fileNameBase = fileName.substr(0,fileName.find_last_of('.'));
 	ByteWriter bWriter(workDir,fileNameBase);
 	bWriter.setCode(constructer.getCode());
 	bWriter.writing();
 	// printf("[ByteWriter] Writing complete!\n");
+	
 
 	return 0;
 }

@@ -4,7 +4,7 @@
 // This is turning tokens to AST.
 
 #include <string>
-#include "parser.h"
+#include "Uparser.h"
 
 
 namespace compiler {
@@ -20,50 +20,50 @@ void Parser::throwSyntaxWrong(std::string exceptedStr) {
 	if(pos>=tkl->getSize()) pos=tkl->getSize()-1;
 	printf("unique.compiler.parser.SyntaxWrong Error:\n"\
 	"\tIn %d:%d, excpted %s, before token'%s'\n"\
-	,tkl->getToken(pos)->getLine()\
-	,tkl->getToken(pos)->getRow()\
+	,tkl->getToken(pos).getLine()\
+	,tkl->getToken(pos).getRow()\
 	,exceptedStr.c_str()\
-	,tkl->getToken(pos)->getData().c_str());
+	,tkl->getToken(pos).getData().c_str());
 	exit(SyntaxWrong);
 }
 
 bool Parser::isNumTerminal() {
 	if(pos>=tkl->getSize()) return false;
-	return tkl->getToken(pos)->getType()==T_NUM;
+	return tkl->getToken(pos).getType()==T_NUM;
 }
 
 bool Parser::isIdnTerminal() {
 	if(pos>=tkl->getSize()) return false;
-	return tkl->getToken(pos)->getType()==T_IDN;
+	return tkl->getToken(pos).getType()==T_WORD;
 }
 
 bool Parser::isTermOp() {
 	if(pos>=tkl->getSize()) return false;
-	return (tkl->getToken(pos)->getType()==T_MUL || tkl->getToken(pos)->getType()==T_DIV);
+	return (tkl->getToken(pos).getType()==T_MUL || tkl->getToken(pos).getType()==T_DIV);
 }
 
 bool Parser::isExprOp() {
 	if(pos>=tkl->getSize()) return false;
-	return (tkl->getToken(pos)->getType()==T_ADD || tkl->getToken(pos)->getType()==T_SUB);
+	return (tkl->getToken(pos).getType()==T_ADD || tkl->getToken(pos).getType()==T_SUB);
 }
 
 bool Parser::isLeftPth() {
 	if(pos>=tkl->getSize()) return false;
-	return tkl->getToken(pos)->getType()==T_PTHL;
+	return tkl->getToken(pos).getType()==T_PTHL;
 }
 
 bool Parser::isRightPth() {
 	if(pos>=tkl->getSize()) return false;
-	return tkl->getToken(pos)->getType()==T_PTHR;
+	return tkl->getToken(pos).getType()==T_PTHR;
 }
 
 bool Parser::isAssignment() {
 	if(pos>=tkl->getSize()) return false;
-	return tkl->getToken(pos)->getType()==T_ASS;
+	return tkl->getToken(pos).getType()==T_ASS;
 }
 
 bool Parser::isNegativeStart() {
-	return tkl->getToken(pos)->getType()==T_SUB && tkl->getToken(pos+1)->getType()==T_NUM;
+	return tkl->getToken(pos).getType()==T_SUB && tkl->getToken(pos+1).getType()==T_NUM;
 }
 
 bool Parser::isFactorStart() {
@@ -95,28 +95,28 @@ Terminal *Parser::number() {
 	if(!isNumTerminal()) {
 		return 0x0;
 	}
-	return tkl->getToken(pos);
+	return &tkl->getToken(pos);
 }
 
 Terminal *Parser::identifier() {
 	if(!isIdnTerminal()) {
 		return 0x0;
 	}
-	return tkl->getToken(pos);
+	return &(tkl->getToken(pos));
 }
 
 Terminal *Parser::termOp() {
 	if(!isTermOp()) {
 		return 0x0;
 	}
-	return tkl->getToken(pos);
+	return &tkl->getToken(pos);
 }
 
 Terminal *Parser::exprOp() {
 	if(!isExprOp()) {
 		return 0x0;
 	}
-	return tkl->getToken(pos);
+	return &tkl->getToken(pos);
 }
 
 NegativeNode *Parser::negative() {

@@ -79,21 +79,15 @@ void Token::show() {
 
 /* class TokenList */
 
-TokenList::TokenList() {
-}
+TokenList::TokenList() {}
 
-TokenList::~TokenList() {
-	for(usint i=0;this->tlist.size();i++) {
-		delete this->tlist[i];
-	}
-}
+TokenList::~TokenList() {}
 
 void TokenList::addToken(Token t) {
-	Token *tokenPtr= new Token(t);
-	this->tlist.push_back(tokenPtr);
+	this->tlist.push_back(t);
 }
 
-Token *TokenList::getToken(usint pos) const {
+Token TokenList::getToken(usint pos) const {
 	return this->tlist.at(pos);
 }
 
@@ -102,23 +96,27 @@ usint TokenList::getSize() const {
 }
 
 enum tokenType TokenList::getTokenType(usint pos) const {
-	return this->tlist[pos]->getType();
+	return this->tlist[pos].getType();
 }
 
 std::string TokenList::getTokenData(usint pos) const{
-	return this->tlist[pos]->getData();
+	return this->tlist[pos].getData();
 }
 
 /* class Lexer */
 
 Lexer::Lexer()
-	: code("\0"), tkl(nullptr), pos(0), line(1), row(1) {
+	: code("\0"), pos(0), line(1), row(1), state(S_NULL) {
 }
 
 Lexer::~Lexer() {}
 
+bool Lexer::isOutOfCodeRange() {
+	return pos>=code.size();
+}
+
 void Lexer::next() {
-	if(pos>=code.size()) {
+	if(isOutOfCodeRange()) {
 		printf("unique.compiler.lexer.PtrPosOutOfRandge Error:\n"\
 		 "\tRead ptr 'pos' is out of range.\n"\
 		 "\t(Is %d, but range max only is %d.)\n",pos,code.size());
@@ -129,26 +127,27 @@ void Lexer::next() {
 
 void Lexer::addToken(Token t) {
 	t.setPosition(line,row);
-	tkl->addToken(t);
+	tkl.addToken(t);
 	usint tokenStrLen = t.getData().size();
 	row+=tokenStrLen;
 }
 
 void Lexer::Word() {
-	while(isalpha(code[pos]) && pos<code.size()) {
+	while(isalpha(code[pos]) && !isOutOfCodeRange()) {
 		readData.push_back(code[pos]);
 		next();
 	}
 	for (int index = 0; index < 4; index++) {
 		if(readData==keywordTable[index]) {
 			addToken(Token(T_KEYWORD,readData,index));
+			return;
 		}
 	}
-	addToken(Token(T_IDN,readData));
+	addToken(Token(T_WORD,readData));
 }
 
 void Lexer::Number() {
-	while(isdigit(code[pos]) && pos<code.size()) {
+	while(isdigit(code[pos]) && !isOutOfCodeRange()) {
 		readData.push_back(code[pos]);
 		next();
 	}
@@ -169,9 +168,9 @@ void Lexer::AssignSymbol() {
 }
 
 void Lexer::Braket() {
-	enum tokenType opT = getBraType(code[pos]);
+	enum tokenType bkT = getBraType(code[pos]);
 	readData.push_back(code[pos]);
-	addToken(Token(opT,readData));
+	addToken(Token(bkT,readData));
 	next();
 }
 
@@ -181,9 +180,13 @@ void Lexer::SingeQuotationMark() {
 	next();
 }
 
-void Lexer::DoubleQuotationMark() {
-	readData.push_back(code[pos]);
-	addToken(Token(T_DQM,readData));
+void Lexer::String() {
+	next(); // skip the "
+	while(!isOutOfCodeRange() && !(code[pos]=='\"')) {
+		readData.push_back(code[pos]);
+		next();
+	}
+	addToken(Token(T_STR,readData));
 	next();
 }
 
@@ -196,21 +199,21 @@ void Lexer::setCode(std::string code) {
 }
 
 TokenList *Lexer::getTokenList() {
-	return this->tkl;
+	return &this->tkl;
 }
 
 void Lexer::lexing() {
-	tkl = new TokenList;
-	while(pos<code.size()) {
+	while(!isOutOfCodeRange()) {
 		if(code[pos]=='\n') { // is enter.
 			next(); this->line++; this->row=1;
 		} else if(code[pos]==' ' || code[pos]=='\t') { // is space or tab.
 			next(); this->row++;
 		} else if (code[pos]=='/' && code[pos]==code[pos+1]) { // is comment.
-			for(;pos<code.size() && code[pos]!='\n';next());
-			// go to "is enter" and nextLine.
+			for(;!isOutOfCodeRange() && code[pos]!='\n';next());
+			// go to "is enter" and nextRow.
 		} else if (isalpha(code[pos])) { // is word.
 			Word();
+			printf("word\n");
 		} else if (code[pos]=='=') { // is assign symbol.
 			AssignSymbol();
 		} else if (isdigit(code[pos])) { // is number.
@@ -219,10 +222,11 @@ void Lexer::lexing() {
 			Oparetor();
 		} else if (getBraType(code[pos])) { // is braket.
 			Braket();
-		} else if (code[pos]=='\'') { // is singe quotation mark
-			SingeQuotationMark();
-		} else if (code[pos]=='\'') { // is double quotation mark
-			DoubleQuotationMark();
+		}/* else if (code[pos]=='\'') { // is singe quotation mark
+//			SingeQuotationMark();
+//		} */else if (code[pos]=='\"') { // is double quotation mark
+			printf("string");
+			String();
 		} else { // is unexecpted token.
 			printf("unique.compiler.lexer.UnexceptedToken Error:\n"\
 			 "\tIn line: %d row: %d, unexcepted token '%c'.\n",line,row,code[pos]);
