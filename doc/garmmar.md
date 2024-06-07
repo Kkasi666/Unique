@@ -8,7 +8,8 @@ ASS -> '='
 SQM -> '\''
 DQM -> '\"'
 NUM -> [0-9]+
-STR -> ([a-z] | [A-Z])*
+WORD -> ([a-z] | [A-Z])+
+STR -> \" [^\"]+ \"
 CMT -> ("//")(!('\n')) -> skip
 SPA -> ' ' | '\t' | '\n'  -> skip
 PTHL -> '('
@@ -22,8 +23,7 @@ KEYWORD ->  "print" |
 ```
 # grammar
 
-//char -> SQM ALL(only a char) SQM  
-string -> DQM STR DQM  
+string -> DQM STR DQM
 __negative -> SUB NUM__  
 __factor -> (PTHL expr PTHR) | NUM | IDN | negative__  
 __term -> factor ((ADD|SUB) factor)*__  

@@ -30,6 +30,11 @@
 
 ## [update] v0.1.3 2023.1.16 23:24
 1. Negtive-number grammar basically completed.
+   
+## [update] v0.1.4 2024.6.7 16:30 
+1. Reorganize the compiler( *using a token's position instead of the token to save the space* ).
+2. Fixed some bug.
+3. The compiler has some new debug operation. 
 
 # Coming Soon
 1. Complete grammar.

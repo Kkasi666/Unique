@@ -22,8 +22,8 @@ private:
 	std::vector<byte> byteCode;
 protected:
 	void makeByteCode(opCode op, int operand);
-	void visitTermOp(Terminal *terl);
-	void visitExprOp(Terminal *terl);
+	void visitTermOp(Terminal_Pointer terl);
+	void visitExprOp(Terminal_Pointer terl);
 	void visitNegativeNode(NegativeNode *negt);
 	void visitFactorNode(FactorNode *fac);
 	void visitTermNode(TermNode *ter);

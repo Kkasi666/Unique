@@ -72,13 +72,14 @@ public:
 	usint getSize() const;
 	enum tokenType getTokenType(usint index) const;
 	std::string getTokenData(usint index) const;
-};
+
+	void show();
+} extern tokenList_Main;
 
 class Lexer {
 private:
 	std::string code;
 	std::string readData;
-	TokenList tkl;
 	usint pos, line, row;
 	enum State {
 		S_NULL,
@@ -89,21 +90,18 @@ protected:
 	bool isOutOfCodeRange();
 	void next();
 	void addToken(Token t);
-	void nextRow(int step=1);
-	void nextLine();
-	void Word();
 	void Number();
+	void Word();
 	void Oparetor();
 	void AssignSymbol();
 	void Braket();
-	void SingeQuotationMark();
+	void DoubleQuotationMark();
 	void String();
 public:
 	Lexer();
 	~Lexer();
 	void setCode(std::string code);
 	std::string getCode() const;
-	TokenList *getTokenList();
 	void lexing();
 };
 

@@ -12,19 +12,19 @@
 
 namespace compiler {
 
-typedef Token Terminal;
+typedef usint Terminal_Pointer; // just using a token's position instead of the token to save the space.
 class ExprNode;
 
 // negative -> SUB NUM
 class NegativeNode {
 private:
 	// Terminal *negSymbol; // It is useless.
-	Terminal *number;
+	Terminal_Pointer number;
 public:
 	NegativeNode();
 	~NegativeNode();
-	void setNumber(Terminal *num);
-	Terminal *getNumber() const;
+	void setNumber(Terminal_Pointer num);
+	Terminal_Pointer getNumber() const;
 	void show();
 };
 
@@ -33,7 +33,7 @@ public:
 // "operand" include "NUM" and "IDN".
 class FactorNode {
 private:
-	Terminal *operand;
+	Terminal_Pointer operand;
 	ExprNode *expr;
 	NegativeNode *negt;
 public:
@@ -41,10 +41,10 @@ public:
 	~FactorNode();
 	bool exprValid();
 	bool negtValid();
-	void setOperand(Terminal *ope);
+	void setOperand(Terminal_Pointer ope);
 	void setExprFactor(ExprNode *fac);
 	void setNegtFactor(NegativeNode *fac);
-	Terminal *getOperand() const;
+	Terminal_Pointer getOperand() const;
 	ExprNode *getExprFactor() const;
 	NegativeNode *getNegtFactor() const;
 	void show();
@@ -54,7 +54,7 @@ public:
 class TermNode {
 private:
 	std::vector<FactorNode*> factors;
-	std::vector<Terminal*> operators;
+	std::vector<Terminal_Pointer> operators;
 public:
 	TermNode();
 	~TermNode();
@@ -63,9 +63,9 @@ public:
 	usint getFactorSize() const;
 	bool onlyFactor();
 	void addFactor(FactorNode *factorN);
-	void addOperator(Terminal *ter);
+	void addOperator(Terminal_Pointer ter);
 	FactorNode *getFactor(usint index) const;
-	Terminal *getOperator(usint index) const;
+	Terminal_Pointer getOperator(usint index) const;
 	void show();
 };
 
@@ -73,7 +73,7 @@ public:
 class ExprNode {
 private:
 	std::vector<TermNode*> factors;
-	std::vector<Terminal*> operators;
+	std::vector<Terminal_Pointer> operators;
 public:
 	ExprNode();
 	~ExprNode();
@@ -82,23 +82,23 @@ public:
 	usint getFactorSize() const;
 	bool onlyFactor();
 	void addFactor(TermNode *termN);
-	void addOperator(Terminal *ter);
+	void addOperator(Terminal_Pointer ter);
 	TermNode *getFactor(usint index) const;
-	Terminal *getOperator(usint index) const;
+	Terminal_Pointer getOperator(usint index) const;
 	void show();
 };
 
 // assign -> IDN ASS expr
 class AssignNode {
 private:
-	Terminal *identifier;
+	Terminal_Pointer identifier;
 	ExprNode *factor;
 public:
 	AssignNode();
 	~AssignNode();
-	void setIdentifier(Terminal *idn);
+	void setIdentifier(Terminal_Pointer idn);
 	void setFactor(ExprNode *exprN);
-	Terminal *getIdentifier() const;
+	Terminal_Pointer getIdentifier() const;
 	ExprNode *getFactor() const;
 	void show();
 };

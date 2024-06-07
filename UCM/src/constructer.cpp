@@ -20,16 +20,18 @@ void Constructer::makeByteCode(opCode op, int operand) {
 	byteCode.push_back(operand);
 }
 
-void Constructer::visitTermOp(Terminal *terl) {
-	switch (terl->getType()) {
+void Constructer::visitTermOp(Terminal_Pointer terl) {
+	if(terl>=tokenList_Main.getSize()) printf("v_termop: OOR");
+	switch (tokenList_Main.getToken(terl).getType()) {
 		case T_MUL: makeByteCode(MUL, 0x0000); break;
 		case T_DIV:  makeByteCode(DIV, 0x0000); break;
 		default: makeByteCode(NOP,0x0000); break;
 	}
 }
 
-void Constructer::visitExprOp(Terminal *terl) {
-	switch (terl->getType()) {
+void Constructer::visitExprOp(Terminal_Pointer terl) {
+	if(terl>=tokenList_Main.getSize()) printf("v_exprop: OOR");
+	switch (tokenList_Main.getToken(terl).getType()) {
 		case T_ADD: makeByteCode(ADD, 0x0000); break;
 		case T_SUB:  makeByteCode(SUB, 0x0000); break;
 		default: makeByteCode(NOP,0x0000); break;
@@ -37,7 +39,8 @@ void Constructer::visitExprOp(Terminal *terl) {
 }
 
 void Constructer::visitNegativeNode(NegativeNode *negt) {
-	int value = negt->getNumber()->getInfo();
+	if(negt->getNumber()>=tokenList_Main.getSize()) printf("v_neg: OOR");
+	int value = tokenList_Main.getToken((negt->getNumber())).getInfo();
 	// if(value <= 0xFFFF) {
 		makeByteCode(PUSH,-(/*(short)*/value));
 	// }
@@ -45,12 +48,12 @@ void Constructer::visitNegativeNode(NegativeNode *negt) {
 }
 
 void Constructer::visitFactorNode(FactorNode *fac) {
-	if(fac->getOperand()) {
-		if(fac->getOperand()->getType()==T_NUM) {
-			int value = fac->getOperand()->getInfo();
+	if(fac->getOperand() != INDEFINE) {
+		if(tokenList_Main.getToken(fac->getOperand()).getType()==T_NUM) {
+			int value = tokenList_Main.getToken(fac->getOperand()).getInfo();
 			makeByteCode(PUSH, value);
-		} else if (fac->getOperand()->getType()==T_IDN) {
-			usint vId = variableTable[fac->getOperand()->getData()];
+		} else if (tokenList_Main.getToken(fac->getOperand()).getType()==T_WORD) {
+			usint vId = variableTable[tokenList_Main.getToken(fac->getOperand()).getData()];
 			makeByteCode(LOAD, vId);
 		}
 	} else if(fac->negtValid()) {
@@ -58,6 +61,7 @@ void Constructer::visitFactorNode(FactorNode *fac) {
 	} else if(fac->exprValid()) {
 		visitExprNode(fac->getExprFactor());
 	} else {
+		printf("v_factor: unknown error");
 		return; // error
 	}
 }
@@ -105,12 +109,14 @@ void Constructer::visitExprNode(ExprNode *expr) {
 void Constructer::visitAssignNode(AssignNode *ass) {
 	if(ass->getFactor()) { // make exprNode
 		visitExprNode(ass->getFactor());
-		if(ass->getIdentifier()) {
-			std::string id=ass->getIdentifier()->getData();
+		if(ass->getIdentifier() != INDEFINE) {
+			std::string id=tokenList_Main.getToken(ass->getIdentifier()).getData();
 			if (!variableTable.count(id)) {
 				variableTable[id]=idCur++;
 			}
 			makeByteCode(STORE, variableTable[id]);
+		} else {
+			printf("[constructer]error:ass");
 		}
 	}
 }

@@ -11,7 +11,7 @@
 int main(int argc, char **argv) {
 	using namespace virtualMachine;
 	/* head */
-	printf("Unique VM 0.1.2\n");
+	printf("Unique VM 0.1.4\n");
 	std::string fileName, workDir;
 	if(argc==2) {
 		workDir = getWorkPath();

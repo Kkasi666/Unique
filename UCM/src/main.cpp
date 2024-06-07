@@ -1,4 +1,4 @@
-// Copyright 2022 Source Speace Studio
+// Copyright 2022-2024 Source Speace Studio
 // License(GPLv3.0)
 // Author: Kkasi
 // This is main, a compiler.
@@ -15,10 +15,10 @@
 using namespace compiler;
 
 int main(int argc, char **argv) {
-	/* head */
-	// printf("Unique compiler 0.1.3\n");
-	std::string fileName, workDir, fileNameBase;
-	if(argc==2) {
+	printf("Unique compiler 0.1.4\n");
+	std::string fileName, workDir, fileNameBase, operation;
+	if(argc==3) { operation = argv[2]; }
+	if(argc==2 || argc==3) {
 		workDir = getWorkPath();
 		fileName = argv[1];
 		if(fileName.substr(fileName.find_last_of('.')+1)!="que") {
@@ -39,40 +39,36 @@ int main(int argc, char **argv) {
 	PrjLoader pjler(workDir,CODEMAXLEN);
 	pjler.initFile(fileName);
 	std::string scode=pjler.getBuffer();
-	// printf("[ProjectLoader] Loading complete!\n");
-	// printf("code:\n%s\n",scode.c_str());
+	printf("[ProjectLoader] Loading complete!\n");
+	if(operation == "-review_code") { printf("code:\n%s\n",scode.c_str()); }
 
 	/* Lexing */
 	Lexer lexer;
 	lexer.setCode(scode);
 	lexer.lexing();
-	TokenList *tls = lexer.getTokenList();
-	// char16_t helloWorld[6] = {0xe4U,char(0xb8),char16_t(0xad),char16_t(0xe6),char16_t(0xb5),char16_t(0x81)};
-	// for (int i = 0; i < 6; i++)
-	// {
-	// 	printf("%x",helloWorld[i]);
-	// }
+	printf("[Lexer] lexing complete!\n");
+	if(operation == "-review_tokens") { tokenList_Main.show(); }
 
 	
 	/* Parsing */ 
 	Parser parser;
-	parser.setTokenList(tls);
 	parser.parsing();
 	printf("[Praser] Prasing complete!\n");
-	parser.showAST();
+	if(operation == "-review_astnode") { parser.showAST(); }
+	
 
 	// Constructing 
 	Constructer constructer(parser.getAST());
 	constructer.constructing();
-	// printf("[Constructer] Constructing complete!\n");
-	// constructer.showByteCode();
-
+	printf("[Constructer] Constructing complete!\n");
+	if(operation == "-review_bytecode") { constructer.showByteCode(); }
+	
 	// Writing byte code into file 
 	fileNameBase = fileName.substr(0,fileName.find_last_of('.'));
 	ByteWriter bWriter(workDir,fileNameBase);
 	bWriter.setCode(constructer.getCode());
 	bWriter.writing();
-	// printf("[ByteWriter] Writing complete!\n");
+	printf("[ByteWriter] Writing complete!\n");
 	
 
 	return 0;

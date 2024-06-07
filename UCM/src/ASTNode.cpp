@@ -10,37 +10,36 @@ namespace compiler {
 /* class NegativeNode */
 
 NegativeNode::NegativeNode()
-	: number(nullptr) {
+	: number(INDEFINE) {
 }
 
-NegativeNode::~NegativeNode() {
-	if(number) delete number;
-}
+NegativeNode::~NegativeNode() {}
 
-void NegativeNode::setNumber(Terminal *num) {
+void NegativeNode::setNumber(Terminal_Pointer num) {
 	this->number = num;
 }
 
-Terminal *NegativeNode::getNumber() const {
+Terminal_Pointer NegativeNode::getNumber() const {
 	return this->number;
 }
 
 void NegativeNode::show() {
-	if(this->number) {
-		printf("{ \"Negative\": { \"number\": ");
-		number->show();
-		printf(" } }");
+	if(number != INDEFINE) {
+		printf("\"Negative\": { \"number\": ");
+		tokenList_Main.getToken(number).show();
+		printf(" }");
+	} else {
+		printf("??");
 	}
 }
 
 /* class FactorNode */
 
 FactorNode::FactorNode()
-	: operand(nullptr),expr(nullptr),negt(nullptr) {
+	: operand(INDEFINE),expr(nullptr),negt(nullptr) {
 }
 
 FactorNode::~FactorNode() {
-	if(operand) delete operand;
 	if(expr) delete expr;
 	if(negt) delete negt;
 }
@@ -52,7 +51,7 @@ bool FactorNode::negtValid() {
 	return negt;
 }
 
-void FactorNode::setOperand(Terminal *ope) {
+void FactorNode::setOperand(Terminal_Pointer ope) {
 	this->operand=ope;
 }
 
@@ -64,7 +63,7 @@ void FactorNode::setNegtFactor(NegativeNode *fac) {
 	this->negt=fac;
 }
 
-Terminal *FactorNode::getOperand() const {
+Terminal_Pointer FactorNode::getOperand() const {
 	return this->operand;
 }
 
@@ -76,9 +75,9 @@ NegativeNode *FactorNode::getNegtFactor() const {
 }
 
 void FactorNode::show() {
-	if(operand) {
+	if(operand != INDEFINE) {
 		printf("{ \"Factor\": { \"operand\": ");
-		operand->show(); // token
+		tokenList_Main.getToken(operand).show(); // token
 		printf(" } }");
 	} else {
 		printf("{ \"Factor\": { ");
@@ -99,11 +98,6 @@ TermNode::~TermNode() {
 	if(!factors.empty()){
 		for(int i=0; i<factors.size(); i++) {
 			delete factors.at(i);
-		}
-	}
-	if(!operators.empty()){
-		for(int i=0; i<operators.size(); i++) {
-			delete operators.at(i);
 		}
 	}
 }
@@ -130,8 +124,8 @@ void TermNode::addFactor(FactorNode *factorN) {
 	}
 }
 
-void TermNode::addOperator(Terminal *ter) {
-	if(ter) {
+void TermNode::addOperator(Terminal_Pointer ter) {
+	if(ter != INDEFINE) {
 		this->operators.push_back(ter);
 	}
 }
@@ -140,7 +134,7 @@ FactorNode *TermNode::getFactor(usint index) const {
 	return factors.at(index);
 }
 
-Terminal *TermNode::getOperator(usint index) const{
+Terminal_Pointer TermNode::getOperator(usint index) const{
 	return operators.at(index);
 }
 
@@ -155,7 +149,7 @@ void TermNode::show() {
 	if(!operators.empty()) {
 		printf(" , \"operators\": [ ");
 		for(int i=0;i<operators.size();i++) {
-			operators.at(i)->show();
+			tokenList_Main.getToken(operators.at(i)).show();
 			printf(", ");
 		}
 		printf("\b\b  \b\b]");
@@ -171,11 +165,6 @@ ExprNode::~ExprNode() {
 	if(!factors.empty()){
 		for(int i=0; i<factors.size(); i++) {
 			delete factors.at(i);
-		}
-	}
-	if(!operators.empty()){
-		for(int i=0; i<operators.size(); i++) {
-			delete operators.at(i);
 		}
 	}
 }
@@ -202,8 +191,8 @@ void ExprNode::addFactor(TermNode *termN) {
 	}
 }
 
-void ExprNode::addOperator(Terminal *ter) {
-	if(ter) {
+void ExprNode::addOperator(Terminal_Pointer ter) {
+	if(ter != INDEFINE) {
 		this->operators.push_back(ter);
 	}
 }
@@ -212,7 +201,7 @@ TermNode *ExprNode::getFactor(usint index) const {
 	return factors.at(index);
 }
 
-Terminal *ExprNode::getOperator(usint index) const{
+Terminal_Pointer ExprNode::getOperator(usint index) const{
 	return operators.at(index);
 }
 
@@ -227,7 +216,7 @@ void   ExprNode::show() {
 	if(!operators.empty()) {
 		printf(" , \"operators\": [ ");
 		for(int i=0;i<operators.size();i++) {
-			operators.at(i)->show();
+			tokenList_Main.getToken(operators.at(i)).show();
 			printf(", ");
 		}
 		printf("\b\b  \b\b] ");
@@ -243,7 +232,7 @@ AssignNode::AssignNode()
 
 AssignNode::~AssignNode() {}
 
-void AssignNode::setIdentifier(Terminal *idn) {
+void AssignNode::setIdentifier(Terminal_Pointer idn) {
 	this->identifier=idn;
 }
 
@@ -251,7 +240,7 @@ void AssignNode::setFactor(ExprNode *exprN) {
 	this->factor=exprN;
 }
 
-Terminal *AssignNode::getIdentifier() const {
+Terminal_Pointer AssignNode::getIdentifier() const {
 	return this->identifier;
 }
 
@@ -260,9 +249,9 @@ ExprNode *AssignNode::getFactor() const {
 }
 
 void AssignNode::show() {
-	if(identifier) {
+	if(identifier != INDEFINE) {
 		printf("{ \"Assign\": { \"identifier\": ");
-		identifier->show();
+		tokenList_Main.getToken(identifier).show();
 		printf(", ");
 		factor->show();
 		printf(" } }");

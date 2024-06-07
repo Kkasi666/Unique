@@ -1,0 +1,8 @@
+// This is a comment
+a=1+1 // add
+b=3-a // sub
+c=a*b // mul
+d = c/a // div
+e=(a+b)*(c-d) // add a parenthese
+f=-7-a
+g=-1 

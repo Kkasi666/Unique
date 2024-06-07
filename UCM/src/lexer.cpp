@@ -7,6 +7,8 @@
 
 namespace compiler {
 
+	TokenList tokenList_Main = TokenList();
+
 enum tokenType getBraType(const char chr) {
 	switch (chr) {
 		case '(': return T_PTHL; break;
@@ -74,7 +76,7 @@ int Token::getInfo() const {
 }
 
 void Token::show() {
-	printf("{ \"linerow\": \"%d:%d\" , \"type\": %d , \"data\" : \"%s\" }", line,row,type, data.c_str());
+	printf("{ \"linerow\": \"%d:%d\" , \"type\": %d , \"data\" : \"%s\" }\n", line,row,type, data.c_str());
 }
 
 /* class TokenList */
@@ -103,6 +105,12 @@ std::string TokenList::getTokenData(usint pos) const{
 	return this->tlist[pos].getData();
 }
 
+void TokenList::show() {
+	for (auto &token : tlist) {
+		token.show();
+	}
+}
+
 /* class Lexer */
 
 Lexer::Lexer()
@@ -127,9 +135,17 @@ void Lexer::next() {
 
 void Lexer::addToken(Token t) {
 	t.setPosition(line,row);
-	tkl.addToken(t);
+	tokenList_Main.addToken(t);
 	usint tokenStrLen = t.getData().size();
 	row+=tokenStrLen;
+}
+
+void Lexer::Number() {
+	while(isdigit(code[pos]) && !isOutOfCodeRange()) {
+		readData.push_back(code[pos]);
+		next();
+	}
+	addToken(Token(T_NUM,readData));
 }
 
 void Lexer::Word() {
@@ -146,12 +162,12 @@ void Lexer::Word() {
 	addToken(Token(T_WORD,readData));
 }
 
-void Lexer::Number() {
-	while(isdigit(code[pos]) && !isOutOfCodeRange()) {
+void Lexer::String() {
+	while(!isOutOfCodeRange() && !(code[pos]=='\"')) {
 		readData.push_back(code[pos]);
 		next();
 	}
-	addToken(Token(T_NUM,readData));
+	addToken(Token(T_STR,readData));
 }
 
 void Lexer::Oparetor() {
@@ -174,21 +190,13 @@ void Lexer::Braket() {
 	next();
 }
 
-void Lexer::SingeQuotationMark() {
+void Lexer::DoubleQuotationMark() {
 	readData.push_back(code[pos]);
-	addToken(Token(T_SQM,readData));
+	addToken(Token(T_DQM,readData));
 	next();
 }
 
-void Lexer::String() {
-	next(); // skip the "
-	while(!isOutOfCodeRange() && !(code[pos]=='\"')) {
-		readData.push_back(code[pos]);
-		next();
-	}
-	addToken(Token(T_STR,readData));
-	next();
-}
+
 
 std::string Lexer::getCode() const {
 	return this->code;
@@ -196,10 +204,6 @@ std::string Lexer::getCode() const {
 
 void Lexer::setCode(std::string code) {
 	this->code=code;
-}
-
-TokenList *Lexer::getTokenList() {
-	return &this->tkl;
 }
 
 void Lexer::lexing() {
@@ -213,7 +217,6 @@ void Lexer::lexing() {
 			// go to "is enter" and nextRow.
 		} else if (isalpha(code[pos])) { // is word.
 			Word();
-			printf("word\n");
 		} else if (code[pos]=='=') { // is assign symbol.
 			AssignSymbol();
 		} else if (isdigit(code[pos])) { // is number.
@@ -222,10 +225,8 @@ void Lexer::lexing() {
 			Oparetor();
 		} else if (getBraType(code[pos])) { // is braket.
 			Braket();
-		}/* else if (code[pos]=='\'') { // is singe quotation mark
-//			SingeQuotationMark();
-//		} */else if (code[pos]=='\"') { // is double quotation mark
-			printf("string");
+		} else if (code[pos]=='\"') { // is double quotation mark
+			DoubleQuotationMark();
 			String();
 		} else { // is unexecpted token.
 			printf("unique.compiler.lexer.UnexceptedToken Error:\n"\

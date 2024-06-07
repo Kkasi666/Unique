@@ -22,9 +22,12 @@ namespace compiler {
 
 class Parser {
 private:
-	TokenList *tkl;
 	usint pos;
 	StatExprNode *stat;
+	enum state {
+		ENDING = -1,
+		RUNNING
+	} parser_state;
 protected:
 	void throwSyntaxWrong(std::string exceptedStr);
 
@@ -44,10 +47,11 @@ protected:
 	bool isStatStart();
 
 	void next();
-	Terminal *number();
-	Terminal *identifier();
-	Terminal *termOp();
-	Terminal *exprOp();
+	Terminal_Pointer getPos();
+	Terminal_Pointer number();
+	Terminal_Pointer identifier();
+	Terminal_Pointer termOp();
+	Terminal_Pointer exprOp();
 
 	NegativeNode *negative();
 	FactorNode *factor();
@@ -58,7 +62,6 @@ protected:
 public:
 	Parser();
 	~Parser();
-	void setTokenList(TokenList *tkl);
 	int parsing();
 	void showAST();
 	StatExprNode *getAST() const;

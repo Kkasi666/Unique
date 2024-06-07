@@ -1,0 +1,392 @@
+{
+    "StatExpr": {
+        "factors": [
+            {
+                "Assign": {
+                    "identifier": {
+                        "linerow": "2:1",
+                        "type": 3,
+                        "data": "a"
+                    },
+                    "Expr": {
+                        "factors": [
+                            {
+                                "Term": {
+                                    "factors": [
+                                        {
+                                            "Factor": {
+                                                "operand": {
+                                                    "linerow": "2:3",
+                                                    "type": 1,
+                                                    "data": "1"
+                                                }
+                                            }
+                                        }
+                                    ]
+                                }
+                            },
+                            {
+                                "Term": {
+                                    "factors": [
+                                        {
+                                            "Factor": {
+                                                "operand": {
+                                                    "linerow": "2:5",
+                                                    "type": 1,
+                                                    "data": "1"
+                                                }
+                                            }
+                                        }
+                                    ]
+                                }
+                            }
+                        ],
+                        "operators": [
+                            {
+                                "linerow": "2:4",
+                                "type": 6,
+                                "data": "+"
+                            }
+                        ]
+                    }
+                }
+            },
+            {
+                "Assign": {
+                    "identifier": {
+                        "linerow": "3:1",
+                        "type": 3,
+                        "data": "b"
+                    },
+                    "Expr": {
+                        "factors": [
+                            {
+                                "Term": {
+                                    "factors": [
+                                        {
+                                            "Factor": {
+                                                "operand": {
+                                                    "linerow": "3:3",
+                                                    "type": 1,
+                                                    "data": "3"
+                                                }
+                                            }
+                                        }
+                                    ]
+                                }
+                            },
+                            {
+                                "Term": {
+                                    "factors": [
+                                        {
+                                            "Factor": {
+                                                "operand": {
+                                                    "linerow": "3:5",
+                                                    "type": 3,
+                                                    "data": "a"
+                                                }
+                                            }
+                                        }
+                                    ]
+                                }
+                            }
+                        ],
+                        "operators": [
+                            {
+                                "linerow": "3:4",
+                                "type": 7,
+                                "data": "-"
+                            }
+                        ]
+                    }
+                }
+            },
+            {
+                "Assign": {
+                    "identifier": {
+                        "linerow": "4:1",
+                        "type": 3,
+                        "data": "c"
+                    },
+                    "Expr": {
+                        "factors": [
+                            {
+                                "Term": {
+                                    "factors": [
+                                        {
+                                            "Factor": {
+                                                "operand": {
+                                                    "linerow": "4:3",
+                                                    "type": 3,
+                                                    "data": "a"
+                                                }
+                                            }
+                                        },
+                                        {
+                                            "Factor": {
+                                                "operand": {
+                                                    "linerow": "4:5",
+                                                    "type": 3,
+                                                    "data": "b"
+                                                }
+                                            }
+                                        }
+                                    ],
+                                    "operators": [
+                                        {
+                                            "linerow": "4:4",
+                                            "type": 8,
+                                            "data": "*"
+                                        }
+                                    ]
+                                }
+                            }
+                        ]
+                    }
+                }
+            },
+            {
+                "Assign": {
+                    "identifier": {
+                        "linerow": "5:1",
+                        "type": 3,
+                        "data": "d"
+                    },
+                    "Expr": {
+                        "factors": [
+                            {
+                                "Term": {
+                                    "factors": [
+                                        {
+                                            "Factor": {
+                                                "operand": {
+                                                    "linerow": "5:5",
+                                                    "type": 3,
+                                                    "data": "c"
+                                                }
+                                            }
+                                        },
+                                        {
+                                            "Factor": {
+                                                "operand": {
+                                                    "linerow": "5:7",
+                                                    "type": 3,
+                                                    "data": "a"
+                                                }
+                                            }
+                                        }
+                                    ],
+                                    "operators": [
+                                        {
+                                            "linerow": "5:6",
+                                            "type": 9,
+                                            "data": "/"
+                                        }
+                                    ]
+                                }
+                            }
+                        ]
+                    }
+                }
+            },
+            {
+                "Assign": {
+                    "identifier": {
+                        "linerow": "6:1",
+                        "type": 3,
+                        "data": "e"
+                    },
+                    "Expr": {
+                        "factors": [
+                            {
+                                "Term": {
+                                    "factors": [
+                                        {
+                                            "Factor": {
+                                                "Expr": {
+                                                    "factors": [
+                                                        {
+                                                            "Term": {
+                                                                "factors": [
+                                                                    {
+                                                                        "Factor": {
+                                                                            "operand": {
+                                                                                "linerow": "6:4",
+                                                                                "type": 3,
+                                                                                "data": "a"
+                                                                            }
+                                                                        }
+                                                                    }
+                                                                ]
+                                                            }
+                                                        },
+                                                        {
+                                                            "Term": {
+                                                                "factors": [
+                                                                    {
+                                                                        "Factor": {
+                                                                            "operand": {
+                                                                                "linerow": "6:6",
+                                                                                "type": 3,
+                                                                                "data": "b"
+                                                                            }
+                                                                        }
+                                                                    }
+                                                                ]
+                                                            }
+                                                        }
+                                                    ],
+                                                    "operators": [
+                                                        {
+                                                            "linerow": "6:5",
+                                                            "type": 6,
+                                                            "data": "+"
+                                                        }
+                                                    ]
+                                                }
+                                            }
+                                        },
+                                        {
+                                            "Factor": {
+                                                "Expr": {
+                                                    "factors": [
+                                                        {
+                                                            "Term": {
+                                                                "factors": [
+                                                                    {
+                                                                        "Factor": {
+                                                                            "operand": {
+                                                                                "linerow": "6:10",
+                                                                                "type": 3,
+                                                                                "data": "c"
+                                                                            }
+                                                                        }
+                                                                    }
+                                                                ]
+                                                            }
+                                                        },
+                                                        {
+                                                            "Term": {
+                                                                "factors": [
+                                                                    {
+                                                                        "Factor": {
+                                                                            "operand": {
+                                                                                "linerow": "6:12",
+                                                                                "type": 3,
+                                                                                "data": "d"
+                                                                            }
+                                                                        }
+                                                                    }
+                                                                ]
+                                                            }
+                                                        }
+                                                    ],
+                                                    "operators": [
+                                                        {
+                                                            "linerow": "6:11",
+                                                            "type": 7,
+                                                            "data": "-"
+                                                        }
+                                                    ]
+                                                }
+                                            }
+                                        }
+                                    ],
+                                    "operators": [
+                                        {
+                                            "linerow": "6:8",
+                                            "type": 8,
+                                            "data": "*"
+                                        }
+                                    ]
+                                }
+                            }
+                        ]
+                    }
+                }
+            },
+            {
+                "Assign": {
+                    "identifier": {
+                        "linerow": "8:1",
+                        "type": 3,
+                        "data": "f"
+                    },
+                    "Expr": {
+                        "factors": [
+                            {
+                                "Term": {
+                                    "factors": [
+                                        {
+                                            "Factor": {
+                                                "Negative": {
+                                                    "number": {
+                                                        "linerow": "8:4",
+                                                        "type": 1,
+                                                        "data": "7"
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    ]
+                                }
+                            },
+                            {
+                                "Term": {
+                                    "factors": [
+                                        {
+                                            "Factor": {
+                                                "operand": {
+                                                    "linerow": "8:6",
+                                                    "type": 3,
+                                                    "data": "a"
+                                                }
+                                            }
+                                        }
+                                    ]
+                                }
+                            }
+                        ],
+                        "operators": [
+                            {
+                                "linerow": "8:5",
+                                "type": 7,
+                                "data": "-"
+                            }
+                        ]
+                    }
+                }
+            },
+            {
+                "Assign": {
+                    "identifier": {
+                        "linerow": "9:1",
+                        "type": 3,
+                        "data": "g"
+                    },
+                    "Expr": {
+                        "factors": [
+                            {
+                                "Term": {
+                                    "factors": [
+                                        {
+                                            "Factor": {
+                                                "Negative": {
+                                                    "number": {
+                                                        "linerow": "9:4",
+                                                        "type": 1,
+                                                        "data": "1"
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    ]
+                                }
+                            }
+                        ]
+                    }
+                }
+            }
+        ]
+    }
+}

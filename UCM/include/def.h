@@ -11,6 +11,8 @@ namespace compiler {
 #define usint unsigned int
 #define byte char
 
+#define INDEFINE -1 // number == INDEFINE is error!!!
+
 enum errType {
 	CallWayWrong=1,
 	IsntQueFile,
